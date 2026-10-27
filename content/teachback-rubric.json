@@ -1,0 +1,46 @@
+{
+ "title": "Teach-back rubric",
+ "scale": {
+  "min": 1,
+  "max": 4
+ },
+ "note": "Each trainer runs one 10-minute part of the course for a group of 4. Each line is scored 1 to 4.",
+ "lines": [
+  {
+   "id": "timing",
+   "name": "Timing",
+   "four_looks_like": "Finishes in time and keeps the part that must never be cut"
+  },
+  {
+   "id": "clarity",
+   "name": "Clarity",
+   "four_looks_like": "Plain words, one instruction at a time, uses the slide and notes; reads each practice's steps, then says them once in Arabic with the glossary's terms"
+  },
+  {
+   "id": "practice",
+   "name": "Practice",
+   "four_looks_like": "Participants do the task; the trainer walks the room and checks each person's work is done"
+  },
+  {
+   "id": "judgment",
+   "name": "Judgment and safety",
+   "four_looks_like": "Catches an AI mistake or a privacy slip (names in AI, a draft sent unread) and handles it as the notes say"
+  }
+ ],
+ "readiness_bar": {
+  "knowledge_after_min": 8,
+  "knowledge_out_of": 10,
+  "every_rubric_line_min": 3,
+  "status": "Proposed, for YGA to agree"
+ },
+ "course_parts": [
+  "Opening talk",
+  "Module 1 · Find a real problem",
+  "Lab 1 · How AI learns, and where it goes wrong",
+  "Module 2 · Build and launch a test",
+  "Module 3 · Read the results and sell",
+  "Lab 2 · Give AI the right facts",
+  "Lab 3 · AI does one job, you approve",
+  "Module 4 · Serve, run and demo day"
+ ]
+}

@@ -1,0 +1,9 @@
+node_modules/
+dist/
+apps-script/build/
+test-results/
+playwright-report/
+.clasprc.json
+.env
+.env.*
+*.log

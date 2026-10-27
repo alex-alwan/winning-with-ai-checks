@@ -1,0 +1,127 @@
+{
+ "title": "Winning with AI · Trainer check",
+ "audience": "trainers",
+ "note": "Part A knowledge check: the same 10 questions at the start of Day 1 and the end of Day 2 of the ToT. Keys stay on the server. These match the ToT package as of 27 Oct 2026; they may be replaced with harder scenario questions later, so load them from this file, never hard-code them in the UI.",
+ "questions": [
+  {
+   "id": "t1",
+   "text": "What do founders do on a practice slide?",
+   "options": {
+    "a": "Watch the trainer demonstrate",
+    "b": "Read the slide aloud together",
+    "c": "Do the task on their own business and type it into their copy",
+    "d": "Discuss it in groups, without writing"
+   },
+   "key": "c",
+   "skill": "How the course works"
+  },
+  {
+   "id": "t2",
+   "text": "You are 5 minutes behind in a module. What do you do?",
+   "options": {
+    "a": "Use the \"cut first\" item in the notes and keep the \"never cut\" part",
+    "b": "Skip the next practice",
+    "c": "Finish 5 minutes late",
+    "d": "Skip the end-of-part check"
+   },
+   "key": "a",
+   "skill": "Running the room"
+  },
+  {
+   "id": "t3",
+   "text": "At the end of each part, how do you find out who needs your help next?",
+   "options": {
+    "a": "Read every worksheet during the break",
+    "b": "Ask the strongest participant",
+    "c": "Wait for people to ask",
+    "d": "A show of hands on the part's \"Done when\", then visit those who did not reach it"
+   },
+   "key": "d",
+   "skill": "Running the room"
+  },
+  {
+   "id": "t4",
+   "text": "A participant is about to paste a list of customer names into AI. You:",
+   "options": {
+    "a": "Let it go this time",
+    "b": "Stop them and have them replace the names with codes first",
+    "c": "Delete their file",
+    "d": "Mention it at the end of the day"
+   },
+   "key": "b",
+   "skill": "Safety"
+  },
+  {
+   "id": "t5",
+   "text": "How do you say course terms in Arabic?",
+   "options": {
+    "a": "Exactly as the Launch Kit glossary has them",
+    "b": "Your own translation",
+    "c": "Only in English",
+    "d": "However each participant prefers"
+   },
+   "key": "a",
+   "skill": "Running the room"
+  },
+  {
+   "id": "t6",
+   "text": "When participants test an AI on 10 examples, an \"Unsure\" answer from the AI counts as:",
+   "options": {
+    "a": "Correct",
+    "b": "Half a point",
+    "c": "Skipped",
+    "d": "A miss"
+   },
+   "key": "d",
+   "skill": "Judging AI"
+  },
+  {
+   "id": "t7",
+   "text": "What is the difference between \"pass mark\" and \"target\" in this course?",
+   "options": {
+    "a": "None, they mean the same",
+    "b": "Pass mark is for tests on people; target is for AI test scores",
+    "c": "Pass mark is for AI; target is for sales",
+    "d": "Target is set after the results"
+   },
+   "key": "b",
+   "skill": "Course terms"
+  },
+  {
+   "id": "t8",
+   "text": "In a live demo, the AI does not make the mistake you planned to show. You:",
+   "options": {
+    "a": "Stop the session",
+    "b": "Keep asking until it fails",
+    "c": "Show the prepared example from the speaker notes and move on",
+    "d": "Skip the rest of the lab"
+   },
+   "key": "c",
+   "skill": "Running the labs"
+  },
+  {
+   "id": "t9",
+   "text": "Why does every AI test run in a new, temporary chat?",
+   "options": {
+    "a": "So earlier answers and saved memory cannot change the result",
+    "b": "It is faster",
+    "c": "It is cheaper",
+    "d": "The law requires it"
+   },
+   "key": "a",
+   "skill": "Judging AI"
+  },
+  {
+   "id": "t10",
+   "text": "What decides whether a participant's AI helper may start answering customers?",
+   "options": {
+    "a": "The trainer's opinion",
+    "b": "The participant's confidence",
+    "c": "How many customers they have",
+    "d": "All 10 test messages answered safely, and all four go-live checks passed"
+   },
+   "key": "d",
+   "skill": "Safety"
+  }
+ ]
+}
