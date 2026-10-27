@@ -35,6 +35,7 @@ interface Saved {
   answers: Record<string, string>;
   t0: number;
   submissionId: string;
+  version: string;
 }
 
 const SECTIONS = ['s-choose', 's-start', 's-q', 's-save', 's-fail', 's-done'];
@@ -144,7 +145,7 @@ export function runCheck(c: CheckConfig): void {
 
   function isUsable(x: Saved): boolean {
     return Array.isArray(x.order) && x.order.length === n && x.order.every((id) => byId[id]) &&
-      typeof x.i === 'number' && x.i >= 0 && x.i < n && !!x.submissionId;
+      typeof x.i === 'number' && x.i >= 0 && x.i < n && !!x.submissionId && x.version === c.content.version;
   }
 
   const fromLink = param('stage').toLowerCase();
@@ -169,13 +170,19 @@ export function runCheck(c: CheckConfig): void {
     const err = $('startErr');
     const nameEl = input('name'), emailEl = input('email');
     const orgEl = c.askOrg ? input('org') : null;
-    [nameEl, emailEl, orgEl].forEach((x) => x && x.removeAttribute('aria-invalid'));
+    [nameEl, emailEl, orgEl].forEach((x) => {
+      if (!x) return;
+      x.removeAttribute('aria-invalid');
+      if (x === orgEl) x.setAttribute('aria-describedby', 'orgHint');
+      else x.removeAttribute('aria-describedby');
+    });
     const name = cleanText(nameEl.value);
     const email = cleanText(emailEl.value).toLowerCase();
     const org = orgEl ? cleanText(orgEl.value) : '';
     const fail = (el: HTMLInputElement, msg: string) => {
       setText(err, msg);
       el.setAttribute('aria-invalid', 'true');
+      el.setAttribute('aria-describedby', el === orgEl ? 'orgHint startErr' : 'startErr');
       el.focus();
     };
     if (!isFullName(name)) return fail(nameEl, MSG.name);
@@ -187,7 +194,7 @@ export function runCheck(c: CheckConfig): void {
     s = {
       name, email, org,
       order: shuffle(questions.map((q) => q.id)),
-      opts, i: 0, answers: {}, t0: Date.now(), submissionId: uuid(),
+      opts, i: 0, answers: {}, t0: Date.now(), submissionId: uuid(), version: c.content.version,
     };
     save();
     renderQ(true);

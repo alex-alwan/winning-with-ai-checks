@@ -52,7 +52,11 @@ A cohort that is not in Config is always open. To stop late answers, set its Sta
 
 1. Open the Sheet.
 2. Menu **Course check > Set scorer code**.
-3. Type the new code (4 to 40 letters, numbers or dashes) and press OK. The old code stops working at once.
+3. Type the new code (8 to 40 letters, numbers or dashes) and press OK. The old code stops working at once.
+
+### Delete test rows
+
+Menu **Course check > Delete TEST rows**. It removes only rows whose cohort is `TEST`.
 
 ### Change the readiness bar
 
@@ -101,7 +105,7 @@ Merge the change into `main` on GitHub. Vercel builds and publishes it by itself
 - `npm test`: unit tests (Vitest) for grading, validation, latest attempt, paired gain, per-question change, readiness, cohort windows, the scorer code, and duplicates. They run the real `apps-script/src/Core.js` in Node.
 - `npm run test:e2e`: builds the site against a local mock of the Apps Script (same `Core.js`, an in-memory sheet, the same redirect), then runs Playwright on every flow at 390×844 and 1280×800. Screenshots land in `test-results/screens/`.
 - `npm run build:site` ends with `scripts/check-dist.mjs`: it fails if any answer key, skill tag or server setting is in `dist/`, or if JavaScript and CSS go over 150 KB.
-- `API_URL=... SCORER_CODE=... npm run live-test -- --cleanup`: the real end-to-end test in cohort `TEST`, then removes every `TEST` row.
+- `API_URL=... SCORER_CODE=... npm run live-test`: the real end-to-end test in cohort `TEST`. Then remove the test rows from the Sheet menu: **Course check > Delete TEST rows**.
 
 ### Layout
 
@@ -124,9 +128,10 @@ One web app address, `POST` with `Content-Type: text/plain` (so the browser send
 | `submitCheck` | no | marks and saves one check, returns the score and the before score |
 | `listTrainees` | yes | names and organisations of trainers in a cohort (no emails) |
 | `submitScore` | yes | saves one teach-back score |
-| `deleteTestRows` | yes | removes only rows whose cohort is `TEST` |
 
-Every save carries a `submissionId`; the script ignores one it already has, so a double tap saves once. A hidden field catches bots. Five wrong scorer codes from one browser bring a 30-second wait.
+Every save carries a `submissionId`; the script ignores one it already has, so a double tap saves once. A hidden field catches bots. Five wrong scorer codes from one browser bring a 30-second wait, and 30 wrong codes from anywhere within 5 minutes pause scoring for everyone for 30 seconds. The scorer code must be 8 to 40 characters.
+
+Known limit of the design: the checks are open links with no sign-in, so anyone with a link could submit under someone else's email. Only the latest try counts, so a later honest try replaces it. Keep links inside the room and close cohorts in Config when they finish.
 
 ### Security notes
 

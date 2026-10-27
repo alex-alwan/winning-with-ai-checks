@@ -84,18 +84,28 @@ function tabIndex_(ss, name) {
   return i;
 }
 
+var TEXT_COLUMNS = ['Stage', 'Cohort', 'Name', 'Organisation', 'Email', 'Submission ID', 'Scorer', 'Role',
+  'Trainee name', 'Trainee email', 'Course part', 'Comment'];
+
+// The number format for each column, so Sheets never turns a cohort like "Jan-26" into a date.
+function columnFormat_(h) {
+  if (h === 'Submitted at') return 'yyyy-mm-dd hh:mm';
+  if (h === 'Percent') return '0%';
+  if (h === 'Minutes') return '0.0';
+  if (h === 'Opens' || h === 'Closes') return 'yyyy-mm-dd';
+  if (TEXT_COLUMNS.indexOf(h) >= 0 || /answer$/.test(h)) return '@';
+  return 'General';
+}
+
+function fitColumns_(sh, n) {
+  if (sh.getMaxColumns() < n) sh.insertColumnsAfter(sh.getMaxColumns(), n - sh.getMaxColumns());
+}
+
 function formatHeader_(sh, header) {
+  fitColumns_(sh, header.length);
   sh.getRange(1, 1, 1, header.length).setValues([header])
     .setFontWeight('bold').setBackground(NAVY).setFontColor('#ffffff').setVerticalAlignment('middle');
   sh.setFrozenRows(1);
-  var maxRows = Math.max(sh.getMaxRows() - 1, 1);
-  header.forEach(function (h, i) {
-    var col = sh.getRange(2, i + 1, maxRows, 1);
-    if (h === 'Submitted at') col.setNumberFormat('yyyy-mm-dd hh:mm');
-    else if (h === 'Percent') col.setNumberFormat('0%');
-    else if (h === 'Opens' || h === 'Closes') col.setNumberFormat('yyyy-mm-dd');
-    else if (h === 'Minutes') col.setNumberFormat('0.0');
-  });
 }
 
 function ensureTab_(ss, name, header) {
@@ -120,7 +130,12 @@ function sheetStore_(ss) {
       var existing = sh.getLastColumn() > 0 ? trimHeader_(sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0]) : [];
       var header = mergeHeader_(existing, wanted);
       if (header.length !== existing.length) formatHeader_(sh, header);
-      sh.appendRow(rowFor_(header, record));
+      // set the formats first, then the values, so text stays text in every row ever written
+      var at = sh.getLastRow() + 1;
+      if (sh.getMaxRows() < at) sh.insertRowsAfter(sh.getMaxRows(), at - sh.getMaxRows() + 50);
+      var rg = sh.getRange(at, 1, 1, header.length);
+      rg.setNumberFormats([header.map(columnFormat_)]);
+      rg.setValues([rowFor_(header, record)]);
     },
     deleteRows: function (name, matches) {
       var sh = ss.getSheetByName(name);
@@ -164,7 +179,7 @@ function sheetStore_(ss) {
     trySummaryLock: function (fn) {
       // a separate lock from the one around writes, so saving answers never waits for a rebuild
       var lock = LockService.getDocumentLock();
-      if (!lock || !lock.tryLock(100)) return false;
+      if (!lock || !lock.tryLock(3000)) return false;
       try {
         fn();
         SpreadsheetApp.flush();
@@ -211,6 +226,8 @@ function ensureConfig_(ss) {
   sh = ensureTab_(ss, TABS.config, CONFIG_HEADER);
   var today = new Date();
   var later = new Date(today.getTime() + 30 * 86400000);
+  var rows0 = sh.getMaxRows() - 1;
+  sh.getRange(2, 1, rows0, 5).setNumberFormats(Array.apply(null, Array(rows0)).map(function () { return CONFIG_HEADER.map(columnFormat_); }));
   sh.getRange(2, 1, 1, 5).setValues([['Example cohort', 'participants', today, later, 'open']]);
   sh.getRange(1, 1).setNote('One row per cohort. Use the same cohort name as in the links (for example HTU-Dec).\n' +
     'Audience: participants or trainers. Status: open or closed.\n' +
@@ -250,6 +267,8 @@ function onOpen() {
     .addItem('Refresh summaries', 'menuRefreshSummaries')
     .addItem('Show the links', 'menuShowLinks')
     .addItem('Set scorer code', 'menuSetScorerCode')
+    .addSeparator()
+    .addItem('Delete TEST rows', 'menuDeleteTestRows')
     .addToUi();
 }
 
@@ -268,15 +287,23 @@ function menuRefreshSummaries() {
   SpreadsheetApp.getActiveSpreadsheet().toast('Both summary tabs are up to date.', 'Course check', 5);
 }
 
+function menuDeleteTestRows() {
+  var ui = SpreadsheetApp.getUi();
+  var ok = ui.alert('Delete TEST rows', 'This deletes every row whose cohort is TEST, in all three response tabs. Other rows stay.', ui.ButtonSet.OK_CANCEL);
+  if (ok !== ui.Button.OK) return;
+  var c = deleteTestRows_(deps_());
+  ui.alert('Deleted ' + c.participants + ' participant, ' + c.trainers + ' trainer and ' + c.teachBacks + ' teach-back rows.');
+}
+
 function menuSetScorerCode() {
   var ui = SpreadsheetApp.getUi();
   var r = ui.prompt('Set scorer code',
-    'Type a new code: 4 to 40 letters or numbers. Share it only with the people who score teach-backs. ' +
+    'Type a new code: 8 to 40 letters, numbers or dashes. Share it only with the people who score teach-backs. ' +
     'The old code stops working straight away.', ui.ButtonSet.OK_CANCEL);
   if (r.getSelectedButton() !== ui.Button.OK) return;
   var code = clean_(r.getResponseText());
-  if (!/^[A-Za-z0-9-]{4,40}$/.test(code)) {
-    ui.alert('The code was not saved. Use 4 to 40 letters, numbers or dashes, with no spaces.');
+  if (!/^[A-Za-z0-9-]{8,40}$/.test(code)) {
+    ui.alert('The code was not saved. Use 8 to 40 letters, numbers or dashes, with no spaces.');
     return;
   }
   PropertiesService.getScriptProperties().setProperty('SCORER_CODE', code);

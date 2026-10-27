@@ -20,6 +20,8 @@ const SECTIONS = ['s-gate', 's-form'];
 const cohort = cohortFromLink();
 const KEY_CODE = `wwai:v1:score-code:${cohort}`;
 const KEY_SCORER = `wwai:v1:scorer:${cohort}`;
+const KEY_SCORED = `wwai:v1:scored:${cohort}`;
+const scored = (): string[] => store.get<string[]>('session', KEY_SCORED) || [];
 const NETWORK = 'Your score was not saved yet. Check your internet connection, then try again. Everything you entered is still here.';
 const ERR = {
   scorer: 'Please write your name.',
@@ -35,6 +37,7 @@ let code = '';
 let submissionId = uuid();
 let typing = false;
 let saving = false;
+let lastFailed = false; // after a failed save, any change makes it a new submission
 
 function esc(s: string): string {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -45,7 +48,7 @@ function markup(): string {
   const scale: number[] = [];
   for (let v = rubric.scale.min; v <= rubric.scale.max; v++) scale.push(v);
   const lines = rubric.lines.map((l) => `
-    <fieldset class="line" aria-describedby="four-${l.id}">
+    <fieldset class="line" id="line-${l.id}" aria-describedby="four-${l.id}">
       <legend>${esc(l.name)}</legend>
       <p class="four" id="four-${l.id}"><b>A ${rubric.scale.max} looks like:</b> ${esc(l.four)}</p>
       <div class="scale">${scale.map((v) => `<label class="sc"><input type="radio" name="line-${l.id}" value="${v}"><span>${v}</span></label>`).join('')}</div>
@@ -74,15 +77,13 @@ function markup(): string {
         <legend>About you</legend>
         <label class="field" for="scorer">Your name</label>
         <input type="text" id="scorer" autocomplete="name" maxlength="80">
-        <fieldset class="sub">
+        <fieldset class="sub" id="roleBox">
           <legend class="field">Your role</legend>
           <div class="pair">
             <label class="opt"><input type="radio" name="role" value="lead"><span class="dot" aria-hidden="true"></span><span class="t">Lead trainer</span></label>
             <label class="opt"><input type="radio" name="role" value="peer"><span class="dot" aria-hidden="true"></span><span class="t">Peer</span></label>
           </div>
         </fieldset>
-        <label class="field" for="part">Course part they taught</label>
-        <select id="part"><option value="">Choose a part</option>${parts}</select>
       </fieldset>
 
       <div class="saved hidden" id="savedMsg" role="status" tabindex="-1"></div>
@@ -105,6 +106,8 @@ function markup(): string {
           <input type="email" id="tEmail" maxlength="120" inputmode="email" autocapitalize="none" spellcheck="false" autocomplete="off" aria-describedby="tEmailHint">
           <div class="links"><button type="button" class="link" id="pickBtn">Choose from the list instead</button></div>
         </div>
+        <label class="field" for="part">Course part they taught</label>
+        <select id="part"><option value="">Choose a part</option>${parts}</select>
       </fieldset>
 
       <fieldset class="block">
@@ -120,7 +123,7 @@ function markup(): string {
       </div>
 
       <div class="hp" aria-hidden="true"><label for="website">Leave this empty</label><input type="text" id="website" tabindex="-1" autocomplete="off"></div>
-      <div class="err" id="formErr" role="alert"></div>
+      <div class="err" id="formErr"></div>
       <button type="submit" class="btn" id="saveBtn">Save score</button>
     </form>
   </section>`;
@@ -159,13 +162,16 @@ async function loadTrainees(r?: ApiResult): Promise<boolean> {
   const sel = $('trainee') as HTMLSelectElement;
   const keep = sel.value;
   sel.innerHTML = '<option value="">Choose a name</option>';
-  list.forEach((t) => {
+  // people this scorer already scored go last and say so; a rescore is still allowed
+  const done = scored();
+  const ordered = list.filter((t) => !done.includes(t.id)).concat(list.filter((t) => done.includes(t.id)));
+  ordered.forEach((t) => {
     const o = document.createElement('option');
     o.value = t.id;
-    o.textContent = t.organisation ? `${t.name} · ${t.organisation}` : t.name;
+    o.textContent = (t.organisation ? `${t.name} · ${t.organisation}` : t.name) + (done.includes(t.id) ? ' · scored' : '');
     sel.appendChild(o);
   });
-  if (keep && list.some((t) => t.id === keep)) sel.value = keep;
+  if (keep && ordered.some((t) => t.id === keep)) sel.value = keep;
   $('traineeEmpty').classList.toggle('hidden', list.length > 0);
   return true;
 }
@@ -241,11 +247,21 @@ function syncOn() {
 }
 $('scoreForm').addEventListener('change', () => {
   syncOn();
-  setText($('formErr'), '');
+  clearErrors();
+  if (lastFailed) {
+    submissionId = uuid();
+    lastFailed = false;
+  }
 });
 
 const comment = $('comment') as HTMLTextAreaElement;
-comment.addEventListener('input', () => setText($('commentCount'), `${comment.value.length} of 500 characters`));
+comment.addEventListener('input', () => {
+  setText($('commentCount'), `${comment.value.length} of 500 characters`);
+  if (lastFailed) {
+    submissionId = uuid();
+    lastFailed = false;
+  }
+});
 
 function rememberScorer() {
   const role = document.querySelector<HTMLInputElement>('input[name="role"]:checked');
@@ -258,23 +274,37 @@ function rememberScorer() {
 ['scorer', 'part'].forEach((id) => $(id).addEventListener('change', rememberScorer));
 document.querySelectorAll('input[name="role"]').forEach((r) => r.addEventListener('change', rememberScorer));
 
-function fail(el: HTMLElement, msg: string) {
-  setText($('formErr'), msg);
+// shows the message right under the part of the form that needs it, and turns that part red
+function fail(el: HTMLElement, msg: string, boxes?: HTMLElement[]) {
+  const box = (el.closest('fieldset.line, fieldset.sub') || el) as HTMLElement;
+  (boxes || [box]).forEach((b) => b.classList.add('invalid'));
   el.setAttribute('aria-invalid', 'true');
-  el.focus();
+  const p = document.createElement('p');
+  p.className = 'err inline-err';
+  p.setAttribute('role', 'alert');
+  p.textContent = msg;
+  box.after(p);
+  setText($('formErr'), msg);
+  box.scrollIntoView({ block: 'center' });
+  el.focus({ preventScroll: true });
+}
+
+function clearErrors() {
+  document.querySelectorAll('#scoreForm [aria-invalid]').forEach((x) => x.removeAttribute('aria-invalid'));
+  document.querySelectorAll('#scoreForm .invalid').forEach((x) => x.classList.remove('invalid'));
+  document.querySelectorAll('#scoreForm .inline-err').forEach((x) => x.remove());
+  setText($('formErr'), '');
 }
 
 $('scoreForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   if (saving) return;
-  document.querySelectorAll('#scoreForm [aria-invalid]').forEach((x) => x.removeAttribute('aria-invalid'));
-  setText($('formErr'), '');
+  clearErrors();
   const scorer = cleanText(input('scorer').value);
   const role = document.querySelector<HTMLInputElement>('input[name="role"]:checked');
   const part = ($('part') as HTMLSelectElement).value;
   if (scorer.length < 2) return fail(input('scorer'), ERR.scorer);
   if (!role) return fail(document.querySelector<HTMLInputElement>('input[name="role"]')!, ERR.role);
-  if (!part) return fail($('part'), ERR.part);
   let trainee: Record<string, string>;
   let traineeLabel: string;
   if (typing) {
@@ -290,11 +320,16 @@ $('scoreForm').addEventListener('submit', async (e) => {
     trainee = { id: sel.value };
     traineeLabel = (sel.options[sel.selectedIndex].textContent || '').split(' · ')[0];
   }
+  if (!part) return fail($('part'), ERR.part);
   const scores: Record<string, number> = {};
+  const missing: HTMLElement[] = [];
   for (const l of rubric.lines) {
     const picked = document.querySelector<HTMLInputElement>(`input[name="line-${l.id}"]:checked`);
-    if (!picked) return fail(document.querySelector<HTMLInputElement>(`input[name="line-${l.id}"]`)!, ERR.scores);
-    scores[l.id] = Number(picked.value);
+    if (picked) scores[l.id] = Number(picked.value);
+    else missing.push($(`line-${l.id}`));
+  }
+  if (missing.length) {
+    return fail(missing[0].querySelector<HTMLInputElement>('input')!, ERR.scores, missing);
   }
   rememberScorer();
   saving = true;
@@ -310,9 +345,12 @@ $('scoreForm').addEventListener('submit', async (e) => {
   setText(btn, 'Save score');
   if (!r.ok) {
     if (['code', 'wait', 'nocode'].includes(r.code)) return backToGate(r);
+    lastFailed = true;
     setText($('formErr'), r.code === 'network' ? NETWORK : r.error);
     return;
   }
+  lastFailed = false;
+  if (trainee.id) store.set('session', KEY_SCORED, Array.from(new Set(scored().concat(trainee.id))));
   // ready for the next person: keep the scorer and the part, clear the trainee and the scores
   submissionId = uuid();
   ($('trainee') as HTMLSelectElement).value = '';
@@ -323,8 +361,9 @@ $('scoreForm').addEventListener('submit', async (e) => {
   comment.value = '';
   setText($('commentCount'), '0 of 500 characters');
   syncOn();
+  if (!typing) void loadTrainees();
   const msg = $('savedMsg');
-  setText(msg, `Saved: ${String(r.trainee || traineeLabel)}. Choose the next trainer below.`);
+  setText(msg, `Saved: ${String(r.trainee || traineeLabel)}, ${part}. Choose the next trainer below, and check the course part.`);
   msg.classList.remove('hidden');
   msg.scrollIntoView({ block: 'start' });
   msg.focus({ preventScroll: true });
@@ -336,7 +375,6 @@ code = store.get<string>('session', KEY_CODE) || '';
 if (code) {
   // a refresh: check the remembered code again before showing anything
   show(SECTIONS, 's-gate');
-  input('code').value = code;
   void (async () => {
     const r = await api({ action: 'listTrainees', code, cohort, device: deviceId() });
     if (r.ok) {

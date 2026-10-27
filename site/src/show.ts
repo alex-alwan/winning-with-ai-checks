@@ -20,7 +20,7 @@ if (cohort) target.searchParams.set('cohort', cohort);
 const link = target.toString();
 
 function qrSvg(text: string): string {
-  const { data, size } = encode(text, { ecc: 'M', border: 2 });
+  const { data, size } = encode(text, { ecc: 'L', border: 2 });
   let d = '';
   data.forEach((row, y) => {
     let x = 0;
@@ -37,5 +37,7 @@ function qrSvg(text: string): string {
 
 setText($('showStage'), LABELS[audience][stage]);
 $('qr').innerHTML = qrSvg(link);
-setText($('showLink'), link.replace(/^https?:\/\//, ''));
+// line breaks only before ? and &, never inside a cohort name
+const esc = (x: string) => x.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+$('showLink').innerHTML = link.replace(/^https?:\/\//, '').split(/(?=[?&])/).map(esc).join('<wbr>');
 document.title = 'Winning with AI · Scan to start';

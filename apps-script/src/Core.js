@@ -462,7 +462,8 @@ function Layout_(width) {
   this.colWidths = [];
 }
 Layout_.prototype.row = function (cells) {
-  var r = (cells || []).slice(0, this.width);
+  // names, emails and cohorts come from the public, so every text cell goes through safe_
+  var r = (cells || []).slice(0, this.width).map(function (v) { return typeof v === 'string' ? safe_(v) : v; });
   while (r.length < this.width) r.push('');
   this.values.push(r);
   return this.values.length;
@@ -579,29 +580,35 @@ function sameCode_(a, b) {
 
 function checkCode_(p, deps) {
   var device = String(p.device || '').replace(/[^A-Za-z0-9-]/g, '').slice(0, 64) || 'unknown';
-  if (deps.cache.get('codelock:all') || deps.cache.get('codelock:' + device)) throw userError_('wait', MSG.wait);
+  if (deps.cache.get('codelock:' + device)) throw userError_('wait', MSG.wait);
   var real = clean_(deps.props.get('SCORER_CODE'));
   if (!real) throw userError_('nocode', MSG.noCode);
   var given = clean_(p.code).slice(0, LIMITS.code);
+  // a burst of wrong guesses from anywhere pauses checking for everyone, the right code included
+  if (deps.cache.get('codelock:all')) throw userError_('wait', MSG.wait);
   if (given && sameCode_(given, real)) {
     deps.cache.remove('codetries:' + device);
     return;
   }
-  var n = Number(deps.cache.get('codetries:' + device) || 0) + 1;
-  if (n >= CODE_TRIES) {
-    deps.cache.put('codelock:' + device, '1', CODE_WAIT_SECONDS);
-    deps.cache.remove('codetries:' + device);
-  } else {
-    deps.cache.put('codetries:' + device, String(n), 600);
-  }
-  var all = Number(deps.cache.get('codetries:all') || 0) + 1;
-  if (all >= CODE_TRIES_ALL) {
-    deps.cache.put('codelock:all', '1', CODE_WAIT_SECONDS);
-    deps.cache.remove('codetries:all');
-  } else {
-    deps.cache.put('codetries:all', String(all), 300);
-  }
-  if (n >= CODE_TRIES) throw userError_('wait', MSG.wait);
+  // counted under the write lock, so parallel guesses cannot all read the same count
+  var locked = deps.store.withLock(function () {
+    var n = Number(deps.cache.get('codetries:' + device) || 0) + 1;
+    if (n >= CODE_TRIES) {
+      deps.cache.put('codelock:' + device, '1', CODE_WAIT_SECONDS);
+      deps.cache.remove('codetries:' + device);
+    } else {
+      deps.cache.put('codetries:' + device, String(n), 600);
+    }
+    var all = Number(deps.cache.get('codetries:all') || 0) + 1;
+    if (all >= CODE_TRIES_ALL) {
+      deps.cache.put('codelock:all', '1', CODE_WAIT_SECONDS);
+      deps.cache.remove('codetries:all');
+    } else {
+      deps.cache.put('codetries:all', String(all), 300);
+    }
+    return n >= CODE_TRIES;
+  });
+  if (locked) throw userError_('wait', MSG.wait);
   throw userError_('code', MSG.code);
 }
 
@@ -617,7 +624,6 @@ function handle_(payload, deps) {
       case 'submitCheck': return submitCheck_(payload, deps);
       case 'listTrainees': return listTrainees_(payload, deps);
       case 'submitScore': return submitScore_(payload, deps);
-      case 'deleteTestRows': return deleteTestRows_(payload, deps);
       default: throw userError_('validation', MSG.badRequest);
     }
   } catch (err) {
@@ -755,9 +761,8 @@ function submitScore_(p, deps) {
   return result;
 }
 
-// Removes the rows of the cohort called TEST from every data tab, for clean-up after a test run.
-function deleteTestRows_(p, deps) {
-  checkCode_(p, deps);
+// Removes the rows of the cohort called TEST from every data tab. Menu only, never the public API.
+function deleteTestRows_(deps) {
   var isTest = function (row, idx) { return clean_(unsafe_(cell_(row, idx, 'Cohort'))).toLowerCase() === 'test'; };
   var counts = deps.store.withLock(function () {
     return {
@@ -769,7 +774,7 @@ function deleteTestRows_(p, deps) {
   deps.props.set(DIRTY.participants, '1');
   deps.props.set(DIRTY.trainers, '1');
   refreshIfDirty_(deps);
-  return { ok: true, deleted: counts };
+  return counts;
 }
 
 // ---------- rebuilding the summary tabs ----------
@@ -814,22 +819,27 @@ function rebuildAll_(deps) {
 }
 
 // One request at a time rebuilds; others leave a flag that the rebuilding request picks up.
+// A failure here never turns a saved answer into an error for the person who sent it.
 function refreshIfDirty_(deps) {
-  deps.store.trySummaryLock(function () {
-    for (var i = 0; i < 3; i++) {
-      var p = deps.props.get(DIRTY.participants) === '1';
-      var t = deps.props.get(DIRTY.trainers) === '1';
-      if (!p && !t) return;
-      if (p) {
-        deps.props.set(DIRTY.participants, '0');
-        try { rebuildParticipants_(deps); } catch (e) { deps.props.set(DIRTY.participants, '1'); if (deps.log) deps.log(e); return; }
+  try {
+    deps.store.trySummaryLock(function () {
+      for (var i = 0; i < 5; i++) {
+        var p = deps.props.get(DIRTY.participants) === '1';
+        var t = deps.props.get(DIRTY.trainers) === '1';
+        if (!p && !t) return;
+        if (p) {
+          deps.props.set(DIRTY.participants, '0');
+          try { rebuildParticipants_(deps); } catch (e) { deps.props.set(DIRTY.participants, '1'); if (deps.log) deps.log(e); return; }
+        }
+        if (t) {
+          deps.props.set(DIRTY.trainers, '0');
+          try { rebuildReadiness_(deps); } catch (e) { deps.props.set(DIRTY.trainers, '1'); if (deps.log) deps.log(e); return; }
+        }
       }
-      if (t) {
-        deps.props.set(DIRTY.trainers, '0');
-        try { rebuildReadiness_(deps); } catch (e) { deps.props.set(DIRTY.trainers, '1'); if (deps.log) deps.log(e); return; }
-      }
-    }
-  });
+    });
+  } catch (e) {
+    if (deps.log) deps.log(e);
+  }
 }
 
 if (typeof module !== 'undefined' && module.exports) {
@@ -844,6 +854,6 @@ if (typeof module !== 'undefined' && module.exports) {
     parseConfig_: parseConfig_, windowCheck_: windowCheck_,
     scoreHeader_: scoreHeader_, parseScoreRows_: parseScoreRows_, readiness_: readiness_, readinessHeadline_: readinessHeadline_,
     participantSummaryLayout_: participantSummaryLayout_, readinessLayout_: readinessLayout_, knowledgeLine_: knowledgeLine_,
-    sameCode_: sameCode_, signed1_: signed1_, handle_: handle_, rebuildAll_: rebuildAll_, readinessBar_: readinessBar_
+    sameCode_: sameCode_, deleteTestRows_: deleteTestRows_, signed1_: signed1_, handle_: handle_, rebuildAll_: rebuildAll_, readinessBar_: readinessBar_
   };
 }

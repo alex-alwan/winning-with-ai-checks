@@ -245,6 +245,11 @@ test.describe('teach-back scoring', () => {
     await page.locator('label.sc', { has: page.locator('input[name="line-timing"][value="4"]') }).click();
     await page.getByRole('button', { name: 'Save score' }).click();
     await expect(page.locator('#formErr')).toHaveText('Please choose a score from 1 to 4 for every line.');
+    // the message shows next to the lines that need a score, in view, and those lines turn red
+    const inline = page.locator('.inline-err');
+    await expect(inline).toHaveText('Please choose a score from 1 to 4 for every line.');
+    await expect(inline).toBeInViewport();
+    await expect(page.locator('fieldset.line.invalid')).toHaveCount(3);
 
     for (const [line, v] of [['clarity', 3], ['practice', 4], ['judgment', 3]] as const) {
       await page.locator('label.sc', { has: page.locator(`input[name="line-${line}"][value="${v}"]`) }).click();
@@ -255,7 +260,8 @@ test.describe('teach-back scoring', () => {
     await tapTargets(page);
     await shot(page, info, '09-score-form-filled');
     await page.getByRole('button', { name: 'Save score' }).click();
-    await expect(page.locator('#savedMsg')).toHaveText('Saved: Zaid Nasser. Choose the next trainer below.');
+    await expect(page.locator('#savedMsg')).toHaveText('Saved: Zaid Nasser, Lab 2 · Give AI the right facts. Choose the next trainer below, and check the course part.');
+    await expect(page.locator('#trainee option')).toHaveText(['Choose a name', 'Amal Khoury · Oasis500', 'Zaid Nasser · ZINC · scored']);
 
     // kept: scorer and part; cleared: trainee and scores
     await expect(page.locator('#scorer')).toHaveValue('Alex Alwan');
@@ -281,7 +287,7 @@ test.describe('teach-back scoring', () => {
       await page.locator('label.sc', { has: page.locator(`input[name="line-${line}"][value="2"]`) }).click();
     }
     await page.getByRole('button', { name: 'Save score' }).click();
-    await expect(page.locator('#savedMsg')).toHaveText('Saved: Huda Saleh. Choose the next trainer below.');
+    await expect(page.locator('#savedMsg')).toContainText('Saved: Huda Saleh, Lab 2');
     expect((await rows(request, S_TAB)).map((r) => r['Trainee email'])).toEqual(['zaid@example.com', 'huda@example.com']);
 
     const readiness = (await control(request, { op: 'read' })).layouts['Trainers · Readiness'];
