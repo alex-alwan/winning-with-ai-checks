@@ -7,6 +7,13 @@ Two small websites and one Google Sheet that prove the course works.
 - During the training, scorers fill in the **teach-back scoring** form for each trainer.
 - Every answer lands in the Sheet **"Winning with AI · Course check results"**, which rebuilds its summaries by itself.
 
+## Live
+
+- Site: https://winning-with-ai-checks.vercel.app (Vercel project `winning-with-ai-checks`, team PRODUCT360; every push to `main` publishes)
+- Backend (Apps Script web app, bound to the results Sheet): `https://script.google.com/macros/s/AKfycbwgfKUdH_X20s_z3XzC-q3ukLPtmDv5w2H3Lb5C1X7kqVzX2w3HJBI-PUvI5Qoby8AOsQ/exec`
+- Deployment id for `npm run deploy:script`: `AKfycbwgfKUdH_X20s_z3XzC-q3ukLPtmDv5w2H3Lb5C1X7kqVzX2w3HJBI-PUvI5Qoby8AOsQ` (script id is in `.clasp.json`)
+- Build the script with `SITE_URL=https://winning-with-ai-checks.vercel.app` so the Sheet's "Show the links" knows the site.
+
 ## The pages
 
 | Page | Who uses it | Example link |

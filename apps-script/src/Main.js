@@ -34,7 +34,7 @@ function json_(o) {
 function deps_() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   if (!ss) throw new Error('The script must be bound to the results Sheet.');
-  var tz = ss.getSpreadsheetTimeZone();
+  var tz = TIME_ZONE;
   var props = PropertiesService.getScriptProperties();
   var cache = CacheService.getScriptCache();
   return {
@@ -64,6 +64,7 @@ function deps_() {
 // ---------- the Sheet ----------
 
 var NAVY = '#0a2240';
+var TIME_ZONE = 'Asia/Amman'; // the course runs in Jordan; dates in Config and the summaries use Amman time
 var CRIMSON = '#d01319';
 var MUTED = '#55657a';
 
@@ -151,7 +152,7 @@ function sheetStore_(ss) {
     readConfig: function () {
       var sh = ensureConfig_(ss);
       if (sh.getLastRow() < 2) return [];
-      var tz = ss.getSpreadsheetTimeZone();
+      var tz = TIME_ZONE;
       var day = function (v) { return v instanceof Date ? Utilities.formatDate(v, tz, 'yyyy-MM-dd') : String(v || ''); };
       var values = sh.getRange(1, 1, sh.getLastRow(), Math.max(sh.getLastColumn(), CONFIG_HEADER.length)).getValues();
       var idx = indexOf_(trimHeader_(values[0]));
@@ -251,6 +252,7 @@ function setup_() {
   ensureTab_(ss, TABS.tScores, scoreHeader_(CONTENT.rubric));
   ensureTab_(ss, TABS.tReadiness, null);
   ensureConfig_(ss);
+  if (ss.getSpreadsheetTimeZone() !== TIME_ZONE) ss.setSpreadsheetTimeZone(TIME_ZONE);
   var blank = ss.getSheetByName('Sheet1');
   if (blank && blank.getLastRow() === 0 && ss.getSheets().length > 1) ss.deleteSheet(blank);
   var props = PropertiesService.getScriptProperties();
