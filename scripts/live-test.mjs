@@ -24,9 +24,11 @@ function answers(file, right) {
 }
 
 function check(file, audience, stage, right, extra) {
+  // the trainer check ends with up to 3 topics, at the end of the training only
+  const topics = file.topics && stage === 'after' ? { topics: file.topics.items.slice(0, 2).map((t) => t.id) } : {};
   return call({
     action: 'submitCheck', audience, stage, cohort: 'TEST', answers: answers(file, right), seconds: 300,
-    submissionId: randomUUID(), version: contentVersion(file), ...extra,
+    submissionId: randomUUID(), version: contentVersion(file), ...topics, ...extra,
   });
 }
 

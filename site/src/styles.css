@@ -16,6 +16,8 @@
   --muted: #55657a;
   --serif: 'EB Garamond', Georgia, 'Times New Roman', serif;
   --sans: 'Open Sans', Arial, Helvetica, sans-serif;
+  /* Arabic text: Open Sans has no Arabic letters, so it gets Noto Sans Arabic, its usual partner */
+  --arabic: 'Noto Sans Arabic', 'Open Sans', Tahoma, Arial, sans-serif;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -96,6 +98,29 @@ h2:focus, h2:focus-visible, .saved:focus { outline: none; }
 @supports not selector(:has(*)) {
   .opt:focus-within { outline: 3px solid var(--matisse); outline-offset: 2px; }
 }
+
+/* Arabic under the English: questions, options and the topic step (trainer check) */
+[lang=ar] { font-family: var(--arabic); }
+.qtext-ar { font-size: 18px; line-height: 1.8; color: var(--body); text-align: right; margin: -8px 0 20px; }
+.tx { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 0; }
+.t-ar { font-size: 16px; line-height: 1.8; color: var(--body); text-align: right; }
+.inline-ar { display: inline-block; }
+.topics legend { display: block; width: 100%; padding: 0; margin-bottom: 6px; }
+.topics legend:focus { outline: none; }
+.topics legend .qtext { display: block; margin-bottom: 10px; }
+.topics legend .qtext-ar { display: block; margin: 0 0 10px; }
+.box {
+  flex: none; width: 22px; height: 22px; border-radius: 5px; border: 2px solid var(--muted); margin-top: 1px;
+  display: flex; align-items: center; justify-content: center;
+}
+.opt.on .box { background: var(--navy); border-color: var(--navy); }
+.opt.on .box::after {
+  content: ""; width: 6px; height: 11px; border: solid var(--white); border-width: 0 2.5px 2.5px 0;
+  transform: translate(0, -1px) rotate(45deg);
+}
+.opt.off { opacity: .5; cursor: default; }
+.opt.off:hover { border-color: var(--line-strong); }
+.count-live { font-size: 14px; font-weight: 600; color: var(--muted); margin: 14px 0 6px; }
 
 .center { text-align: center; padding-top: 30px; }
 .cmp { display: flex; justify-content: center; flex-wrap: wrap; gap: 28px; margin: 18px 0 18px; }

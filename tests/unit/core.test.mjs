@@ -17,13 +17,16 @@ function answers(questions, right) {
   return a;
 }
 
-function check(env, { audience = 'participants', stage = 'before', cohort = 'HTU-Dec', name = 'Rania Haddad', email = 'rania@example.com', right = 5, organisation, submissionId } = {}) {
+function check(env, { audience = 'participants', stage = 'before', cohort = 'HTU-Dec', name = 'Rania Haddad', email = 'rania@example.com', right = 5, organisation, submissionId, topics } = {}) {
   const qs = audience === 'participants' ? P : T;
+  // trainers pick topics at the end of the training; default to the first two
+  const pick = topics ?? (audience === 'trainers' && stage === 'after' ? content.trainers.topics.items.slice(0, 2).map((t) => t.id) : undefined);
   return env.handle({
     action: 'submitCheck', audience, stage, cohort, name, email,
     organisation: organisation ?? (audience === 'trainers' ? 'Oasis500' : undefined),
     answers: answers(qs, right), seconds: 400, submissionId: submissionId || sid(),
     version: content.versions[audience],
+    ...(pick ? { topics: pick } : {}),
   });
 }
 
@@ -483,3 +486,65 @@ describe('small helpers', () => {
     expect(Core.isFullName_('رانيا حداد')).toBe(true);
   });
 });
+
+describe('end-of-training topics (trainers)', () => {
+  const items = content.trainers.topics.items;
+
+  it('needs 1 to 3 known topics at the end of the training, with no repeats', () => {
+    const env = memoryDeps();
+    const msg = 'Please choose 1 to 3 topics.';
+    expect(check(env, { audience: 'trainers', stage: 'after', topics: [] }).error).toBe(msg);
+    expect(check(env, { audience: 'trainers', stage: 'after', topics: items.slice(0, 4).map((t) => t.id) }).error).toBe(msg);
+    expect(check(env, { audience: 'trainers', stage: 'after', topics: [items[0].id, items[0].id] }).error).toBe(msg);
+    expect(check(env, { audience: 'trainers', stage: 'after', topics: ['made-up'] }).error).toBe(msg);
+    expect(check(env, { audience: 'trainers', stage: 'after', topics: 'room' }).error).toBe(msg);
+    expect(env.table(Core.TABS.tResponses).rows).toHaveLength(0);
+  });
+
+  it('stores the chosen topics as labels in the content order, and ignores topics at the start', () => {
+    const env = memoryDeps();
+    expect(check(env, { audience: 'trainers', stage: 'before', topics: ['room'] })).toMatchObject({ ok: true });
+    expect(check(env, { audience: 'trainers', stage: 'after', topics: ['teach-back', 'problem'] })).toMatchObject({ ok: true, score: 5 });
+    const t = env.table(Core.TABS.tResponses);
+    const idx = Core.indexOf_(t.header);
+    expect(t.header[t.header.length - 1]).toBe('Topics');
+    expect(t.rows[0][idx.Topics]).toBe('');
+    const byId = Object.fromEntries(items.map((i) => [i.id, i.label]));
+    expect(t.rows[1][idx.Topics]).toBe(byId.problem + '; ' + byId['teach-back']);
+    const spec = Core.audienceSpec_(content, 'trainers');
+    expect(Core.parseCheckRows_(t, spec)[1].topics).toEqual(['problem', 'teach-back']);
+  });
+
+  it('counts the latest end-of-training choice of each trainer in the Readiness tab', () => {
+    const env = memoryDeps();
+    check(env, { audience: 'trainers', stage: 'after', email: 'a@x.io', topics: ['room'] });
+    env.tick(1000);
+    check(env, { audience: 'trainers', stage: 'after', email: 'a@x.io', topics: ['facts', 'helper'] }); // a retake replaces it
+    check(env, { audience: 'trainers', stage: 'after', email: 'b@x.io', topics: ['facts'] });
+    check(env, { audience: 'trainers', stage: 'before', email: 'c@x.io' });
+    const spec = Core.audienceSpec_(content, 'trainers');
+    const sum = Core.topicsSummary_(Core.parseCheckRows_(env.table(Core.TABS.tResponses), spec), content.trainers.topics);
+    expect(sum.answered).toBe(2);
+    expect(sum.items[0]).toMatchObject({ id: 'facts', count: 2, share: 1 });
+    expect(sum.items[1]).toMatchObject({ id: 'helper', count: 1, share: 0.5 });
+    expect(sum.items.find((i) => i.id === 'room').count).toBe(0);
+    const L = env.layouts.get(Core.TABS.tReadiness);
+    const col = L.values.map((v) => v[0]);
+    expect(col).toContain('What helped trainers most (end of the training)');
+    expect(col).toContain('2 trainers chose up to 3 topics. Only the latest end-of-training answer per trainer counts.');
+    const top = col.indexOf('Topic');
+    expect(L.values[top + 1].slice(0, 3)).toEqual([items.find((i) => i.id === 'facts').label, 2, 1]);
+  });
+
+  it('serves the Arabic text and the topic question with the trainer questions, never the keys', () => {
+    const env = memoryDeps();
+    const r = env.handle({ action: 'getQuestions', audience: 'trainers' });
+    expect(r.questions).toHaveLength(10);
+    expect(r.questions[0].text_ar).toMatch(/[\u0600-\u06FF]/);
+    expect(r.questions[0].options.every((o) => /[\u0600-\u06FF]/.test(o.text_ar))).toBe(true);
+    expect(r.topics).toMatchObject({ min: 1, max: 3 });
+    expect(r.topics.items).toHaveLength(items.length);
+    expect(JSON.stringify(r)).not.toMatch(/"key"|"skill"/);
+  });
+});
+

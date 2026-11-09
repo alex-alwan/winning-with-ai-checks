@@ -4,9 +4,11 @@ import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = fileURLToPath(new URL('../..', import.meta.url));
-type Q = { id: string; text: string; options: Record<string, string>; key: string };
+type Q = { id: string; text: string; text_ar?: string; options: Record<string, string>; options_ar?: Record<string, string>; key: string };
 export const participantQs: Q[] = JSON.parse(readFileSync(join(ROOT, 'content/participant-questions.json'), 'utf8')).questions;
-export const trainerQs: Q[] = JSON.parse(readFileSync(join(ROOT, 'content/trainer-questions.json'), 'utf8')).questions;
+const trainerFile = JSON.parse(readFileSync(join(ROOT, 'content/trainer-questions.json'), 'utf8'));
+export const trainerQs: Q[] = trainerFile.questions;
+export const trainerTopics: { id: string; label: string; label_ar: string }[] = trainerFile.topics.items;
 
 export const API = 'http://127.0.0.1:8787';
 
@@ -35,7 +37,7 @@ export async function noHorizontalScroll(page: Page) {
 // every visible button, link, option card and input is at least 44 px tall
 export async function tapTargets(page: Page) {
   const small = await page.evaluate(() => {
-    const els = Array.from(document.querySelectorAll<HTMLElement>('button, a, label.opt, label.sc span, input:not([type=radio]):not([tabindex="-1"]), select, textarea'));
+    const els = Array.from(document.querySelectorAll<HTMLElement>('button, a, label.opt, label.sc span, input:not([type=radio]):not([type=checkbox]):not([tabindex="-1"]), select, textarea'));
     return els
       .filter((e) => e.offsetParent !== null && getComputedStyle(e).visibility !== 'hidden')
       .map((e) => ({ id: e.id || e.className || e.tagName, h: e.getBoundingClientRect().height }))
@@ -51,13 +53,13 @@ export async function shot(page: Page, info: TestInfo, name: string) {
 }
 
 // Answers every question on screen: the first `right` questions in the content file correctly, the rest wrongly.
-export async function answerAll(page: Page, qs: Q[], right: number, onEach?: (i: number) => Promise<void>) {
+export async function answerAll(page: Page, qs: Q[], right: number, onEach?: (i: number) => Promise<void>, lastButton = 'Submit') {
   const n = qs.length;
   for (let i = 0; i < n; i++) {
     await expect(page.locator('#qCount')).toHaveText(`Question ${i + 1} of ${n}`);
     const next = page.locator('#nextBtn');
     await expect(next).toBeDisabled();
-    await expect(next).toHaveText(i === n - 1 ? 'Submit' : 'Next');
+    await expect(next).toHaveText(i === n - 1 ? lastButton : 'Next');
     const text = (await page.locator('#qText').textContent()) || '';
     const qi = qs.findIndex((q) => q.text === text);
     expect(qi, 'question on screen comes from the content file').toBeGreaterThanOrEqual(0);

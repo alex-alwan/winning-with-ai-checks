@@ -22,7 +22,8 @@ Say this before each check:
 
 - "There is no pass or fail. Answer alone, without looking anything up."
 - "Use the **same email** at the start and the end. That is how we match your two results."
-- It takes about 10 minutes (trainers: about 8).
+- It takes about 10 minutes, for founders and for trainers.
+- Trainers see Arabic under every question and option. At the end of the training, the trainer check has one last step: choose up to 3 topics that helped them most.
 
 ## The scorer code
 

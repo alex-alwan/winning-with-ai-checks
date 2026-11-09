@@ -24,20 +24,37 @@ export function loadContent() {
 // A short fingerprint of the question and option ids. The pages send it with
 // every answer, so the server can spot a page built from older questions.
 export function contentVersion(file) {
-  const shape = file.questions.map((q) => q.id + ':' + Object.keys(q.options).join(',')).join('|');
+  let shape = file.questions.map((q) => q.id + ':' + Object.keys(q.options).join(',')).join('|');
+  if (file.topics) shape += '#topics:' + file.topics.items.map((t) => t.id).join(',') + ':' + file.topics.min + '-' + file.topics.max;
   return createHash('sha256').update(shape).digest('hex').slice(0, 12);
 }
 
 export function publicQuestions(file) {
-  return {
+  const out = {
     audience: file.audience,
     version: contentVersion(file),
     questions: file.questions.map((q) => ({
       id: q.id,
       text: q.text,
-      options: Object.keys(q.options).map((k) => ({ id: k, text: q.options[k] })),
+      ...(q.text_ar ? { text_ar: q.text_ar } : {}),
+      options: Object.keys(q.options).map((k) => ({
+        id: k,
+        text: q.options[k],
+        ...(q.options_ar ? { text_ar: q.options_ar[k] } : {}),
+      })),
     })),
   };
+  // the end-of-training topic question is not scored, so all of it is public
+  if (file.topics) {
+    out.topics = {
+      question: file.topics.question,
+      question_ar: file.topics.question_ar,
+      min: file.topics.min,
+      max: file.topics.max,
+      items: file.topics.items.map((t) => ({ id: t.id, label: t.label, label_ar: t.label_ar })),
+    };
+  }
+  return out;
 }
 
 export function publicRubric(file) {
@@ -72,6 +89,40 @@ export function validateQuestions(file, audience) {
     checkDashes(q.text, q.id);
     keys.forEach((k) => checkDashes(q.options[k], `${q.id} option ${k}`));
   }
+  // Arabic is all or nothing: once one question has it, every question and option needs it
+  if (file.questions.some((q) => q.text_ar || q.options_ar)) {
+    for (const q of file.questions) {
+      if (!q.text_ar) fail(`${q.id} has no Arabic text (text_ar)`);
+      checkDashes(q.text_ar, `${q.id} Arabic text`);
+      const en = Object.keys(q.options).sort().join(',');
+      const ar = Object.keys(q.options_ar || {}).sort().join(',');
+      if (en !== ar) fail(`${q.id} options_ar must have the same option ids as options (${en})`);
+      Object.keys(q.options_ar).forEach((k) => {
+        if (!q.options_ar[k]) fail(`${q.id} Arabic option ${k} is empty`);
+        checkDashes(q.options_ar[k], `${q.id} Arabic option ${k}`);
+      });
+    }
+  }
+  if (file.topics) validateTopics(file.topics, audience);
+}
+
+function validateTopics(t, audience) {
+  if (!t.question || !t.question_ar) fail(`${audience} topics need question and question_ar`);
+  if (!Array.isArray(t.items) || t.items.length < 2) fail(`${audience} topics need at least two items`);
+  if (!Number.isInteger(t.min) || !Number.isInteger(t.max) || t.min < 1 || t.max < t.min || t.max > t.items.length) {
+    fail(`${audience} topics need whole numbers min >= 1 and max between min and the number of items`);
+  }
+  const ids = new Set();
+  for (const item of t.items) {
+    if (!/^[a-z0-9-]{1,30}$/.test(item.id || '')) fail(`topic id "${item.id}" is not valid (lowercase letters, numbers, dashes)`);
+    if (ids.has(item.id)) fail(`topic id "${item.id}" appears twice`);
+    ids.add(item.id);
+    if (!item.label || !item.label_ar) fail(`topic ${item.id} needs label and label_ar`);
+    // labels are stored in one Sheet cell, separated by semicolons
+    if (item.label.includes(';')) fail(`topic ${item.id} label must not contain a semicolon`);
+    [item.label, item.label_ar].forEach((x) => checkDashes(x, `topic ${item.id}`));
+  }
+  [t.question, t.question_ar].forEach((x) => checkDashes(x, `${audience} topic question`));
 }
 
 export function validateRubric(file) {

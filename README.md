@@ -3,7 +3,7 @@
 Two small websites and one Google Sheet that prove the course works.
 
 - **Participants** (founders) take the **Course check**: 12 questions at the start and at the end of the course.
-- **Trainers** take the **Trainer check**: 10 questions at the start and at the end of the Training of Trainers.
+- **Trainers** take the **Trainer check**: 10 questions about the ideas in the training, in English with Arabic under each question and option, at the start and at the end of the Training of Trainers. At the end only, they also choose up to 3 topics that helped them most.
 - During the training, scorers fill in the **teach-back scoring** form for each trainer.
 - Every answer lands in the Sheet **"Winning with AI · Course check results"**, which rebuilds its summaries by itself.
 
@@ -40,7 +40,7 @@ The pages are a small website on Vercel. When someone presses Submit, the page s
 | Participants · Summary | Rebuilt after every submission: a headline you can quote, averages before and after, the people who took both, each question, each person. |
 | Trainers · Responses | One row per trainer check, with organisation. |
 | Trainers · Teach-backs | One row per teach-back score. |
-| Trainers · Readiness | Rebuilt after every submission: one row per trainer, and who meets the readiness bar. |
+| Trainers · Readiness | Rebuilt after every submission: one row per trainer, and who meets the readiness bar. Below it, the topics trainers chose at the end, most chosen first. |
 | Config | One row per cohort: open or closed, and the dates it is open. |
 
 Only the latest try per person, stage and cohort counts in the summaries. Earlier tries stay in Responses.
@@ -82,9 +82,10 @@ The questions live in three files, and nowhere else:
 - `content/trainer-questions.json`
 - `content/teachback-rubric.json`
 
-1. Edit the file (text, options, `key` for the right answer, `skill`).
+1. Edit the file (text, options, `key` for the right answer, `skill`). In the trainer file, every question also has `text_ar` and `options_ar` (the Arabic), and `topics` holds the end-of-training topic question. The build stops if any Arabic is missing.
 2. Run one command on a computer with this repo: `npm run build`. It checks the files, rebuilds the site and the script, and stops if anything is wrong (for example a key that is not one of the options, or a dash the writing rules forbid).
 3. Redeploy both parts (below).
+4. For the trainer check, run `node scripts/print-trainer-check.mjs` to refresh `docs/trainer-check.md`, the review copy with both languages and the answer key (course team only).
 
 If you replace questions with different ones, rename the old Responses tab first (for example `Trainers · Responses (old questions)`). The script then starts a fresh tab, so old and new answers do not mix in the summaries.
 

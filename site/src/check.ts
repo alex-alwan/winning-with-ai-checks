@@ -36,9 +36,11 @@ interface Saved {
   t0: number;
   submissionId: string;
   version: string;
+  topics?: string[];
+  step?: 'questions' | 'topics';
 }
 
-const SECTIONS = ['s-choose', 's-start', 's-q', 's-save', 's-fail', 's-done'];
+const SECTIONS = ['s-choose', 's-start', 's-q', 's-topics', 's-save', 's-fail', 's-done'];
 const MSG = {
   name: 'Please write your full name (first and last).',
   email: 'Please write a valid email. Use the same one at the start and the end.',
@@ -84,10 +86,28 @@ function markup(c: CheckConfig): string {
     <form id="qForm" novalidate>
       <div class="progress"><span id="qCount"></span><div class="bar" aria-hidden="true"><b id="qBar"></b></div></div>
       <h2 class="qtext" id="qText" tabindex="-1"></h2>
-      <div class="opts" id="qOpts" role="radiogroup" aria-labelledby="qText"></div>
+      <p class="qtext-ar hidden" id="qTextAr" lang="ar" dir="rtl"></p>
+      <div class="opts" id="qOpts" role="radiogroup" aria-labelledby="qText qTextAr"></div>
       <div class="row">
         <button type="button" class="link" id="backBtn">Back</button>
         <button type="submit" class="btn" id="nextBtn" disabled>Next</button>
+      </div>
+    </form>
+  </section>
+
+  <section id="s-topics" class="hidden">
+    <form id="tForm" novalidate>
+      <div class="progress"><span>Last step</span><div class="bar" aria-hidden="true"><b style="width:100%"></b></div></div>
+      <fieldset class="topics" aria-describedby="tHint tCount">
+        <legend id="tLegend" tabindex="-1"><span class="qtext" id="tQ"></span><span class="qtext-ar" id="tQAr" lang="ar" dir="rtl"></span></legend>
+        <p class="hint" id="tHint"></p>
+        <div class="opts" id="tOpts"></div>
+      </fieldset>
+      <p class="count-live" id="tCount" aria-live="polite"></p>
+      <div class="err" id="tErr" role="alert"></div>
+      <div class="row">
+        <button type="button" class="link" id="tBack">Back</button>
+        <button type="submit" class="btn" id="tSubmit">Submit</button>
       </div>
     </form>
   </section>
@@ -127,6 +147,9 @@ export function runCheck(c: CheckConfig): void {
 
   const key = () => `wwai:v1:${c.audience}:${stage}:${cohort}`;
   const save = () => s && store.set('session', key(), s);
+  // the trainer check ends with a topic question, at the end of the training only
+  const topicConf = c.content.topics;
+  const hasTopics = () => stage === 'after' && !!topicConf;
 
   // ---------- stage ----------
   function setStage(st: Stage, focus: boolean) {
@@ -136,7 +159,8 @@ export function runCheck(c: CheckConfig): void {
     const saved = store.get<Saved>('session', key());
     if (saved && isUsable(saved)) {
       s = saved;
-      renderQ(false);
+      if (s.step === 'topics' && hasTopics()) renderTopics(false);
+      else renderQ(false);
       return;
     }
     show(SECTIONS, 's-start');
@@ -207,6 +231,9 @@ export function runCheck(c: CheckConfig): void {
     setText($('qCount'), `Question ${s.i + 1} of ${n}`);
     ($('qBar') as HTMLElement).style.width = Math.round((100 * s.i) / n) + '%';
     setText($('qText'), q.text);
+    const ar = $('qTextAr');
+    setText(ar, q.text_ar || '');
+    ar.classList.toggle('hidden', !q.text_ar);
     const box = $('qOpts');
     box.innerHTML = '';
     const order = s.opts[q.id] && s.opts[q.id].length === q.options.length ? s.opts[q.id] : q.options.map((o) => o.id);
@@ -223,10 +250,7 @@ export function runCheck(c: CheckConfig): void {
       const dot = document.createElement('span');
       dot.className = 'dot';
       dot.setAttribute('aria-hidden', 'true');
-      const t = document.createElement('span');
-      t.className = 't';
-      t.textContent = o.text;
-      lab.append(inp, dot, t);
+      lab.append(inp, dot, optionText(o.text, o.text_ar));
       inp.addEventListener('change', () => {
         s!.answers[q.id] = o.id;
         save();
@@ -237,7 +261,7 @@ export function runCheck(c: CheckConfig): void {
     });
     const next = $('nextBtn') as HTMLButtonElement;
     next.disabled = !s.answers[q.id];
-    setText(next, s.i === n - 1 ? 'Submit' : 'Next');
+    setText(next, s.i === n - 1 && !hasTopics() ? 'Submit' : 'Next');
     ($('backBtn') as HTMLElement).style.visibility = s.i === 0 ? 'hidden' : 'visible';
     show(SECTIONS, 's-q');
     if (focus) $('qText').focus({ preventScroll: true });
@@ -250,6 +274,10 @@ export function runCheck(c: CheckConfig): void {
       s.i++;
       save();
       renderQ(true);
+    } else if (hasTopics()) {
+      s.step = 'topics';
+      save();
+      renderTopics(true);
     } else {
       submit();
     }
@@ -260,6 +288,76 @@ export function runCheck(c: CheckConfig): void {
       save();
       renderQ(true);
     }
+  });
+
+  // ---------- topics (end of the training) ----------
+  function renderTopics(focus: boolean) {
+    if (!s || !topicConf) return;
+    const chosen = new Set(s.topics || []);
+    setText($('tQ'), topicConf.question);
+    setText($('tQAr'), topicConf.question_ar);
+    $('tHint').innerHTML = '';
+    $('tHint').append(`Choose up to ${topicConf.max} topics. `, arabicSpan(`اختر حتى ${topicConf.max} مواضيع.`));
+    setText($('tErr'), '');
+    const box = $('tOpts');
+    box.innerHTML = '';
+    topicConf.items.forEach((t) => {
+      const lab = document.createElement('label');
+      lab.className = 'opt chk';
+      const inp = document.createElement('input');
+      inp.type = 'checkbox';
+      inp.value = t.id;
+      inp.checked = chosen.has(t.id);
+      const tick = document.createElement('span');
+      tick.className = 'box';
+      tick.setAttribute('aria-hidden', 'true');
+      lab.append(inp, tick, optionText(t.label, t.label_ar));
+      inp.addEventListener('change', () => {
+        if (inp.checked) chosen.add(t.id); else chosen.delete(t.id);
+        s!.topics = topicConf.items.map((x) => x.id).filter((id) => chosen.has(id));
+        save();
+        setText($('tErr'), '');
+        syncTopics();
+      });
+      box.appendChild(lab);
+    });
+    syncTopics();
+    show(SECTIONS, 's-topics');
+    if (focus) $('tLegend').focus({ preventScroll: true });
+  }
+
+  // ticked cards look selected; once the maximum is reached, the other cards are switched off
+  function syncTopics() {
+    if (!s || !topicConf) return;
+    const k = (s.topics || []).length;
+    $('tOpts').querySelectorAll<HTMLLabelElement>('label.opt').forEach((l) => {
+      const i = l.querySelector('input') as HTMLInputElement;
+      l.classList.toggle('on', i.checked);
+      i.disabled = !i.checked && k >= topicConf.max;
+      l.classList.toggle('off', i.disabled);
+    });
+    const count = $('tCount');
+    count.innerHTML = '';
+    count.append(`${k} of ${topicConf.max} chosen. `, arabicSpan(`اخترت ${k} من ${topicConf.max}.`));
+  }
+
+  $('tForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!s || !topicConf) return;
+    if ((s.topics || []).length < topicConf.min) {
+      const err = $('tErr');
+      err.innerHTML = '';
+      err.append('Please choose at least one topic. ', arabicSpan('يرجى اختيار موضوع واحد على الأقل.'));
+      (document.querySelector('#tOpts input:not(:disabled)') as HTMLInputElement | null)?.focus();
+      return;
+    }
+    submit();
+  });
+  $('tBack').addEventListener('click', () => {
+    if (!s) return;
+    s.step = 'questions';
+    save();
+    renderQ(true);
   });
 
   // ---------- submit ----------
@@ -280,6 +378,7 @@ export function runCheck(c: CheckConfig): void {
       seconds: Math.round((Date.now() - s.t0) / 1000),
       submissionId: s.submissionId,
       website: input('website').value,
+      ...(hasTopics() ? { topics: s.topics || [] } : {}),
     };
     const r = await api(payload);
     sending = false;
@@ -329,4 +428,32 @@ export function runCheck(c: CheckConfig): void {
     show(SECTIONS, 's-done');
     $('doneTitle').focus({ preventScroll: true });
   }
+}
+
+// English option text, with its Arabic translation underneath when there is one
+function optionText(en: string, ar?: string): HTMLElement {
+  const wrap = document.createElement('span');
+  wrap.className = 'tx';
+  const t = document.createElement('span');
+  t.className = 't';
+  t.textContent = en;
+  wrap.appendChild(t);
+  if (ar) {
+    const a = document.createElement('span');
+    a.className = 't-ar';
+    a.lang = 'ar';
+    a.dir = 'rtl';
+    a.textContent = ar;
+    wrap.appendChild(a);
+  }
+  return wrap;
+}
+
+function arabicSpan(text: string): HTMLElement {
+  const a = document.createElement('span');
+  a.lang = 'ar';
+  a.dir = 'rtl';
+  a.className = 'inline-ar';
+  a.textContent = text;
+  return a;
 }

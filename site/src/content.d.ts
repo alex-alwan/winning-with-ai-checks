@@ -3,18 +3,29 @@
 interface PublicOption {
   id: string;
   text: string;
+  text_ar?: string;
 }
 
 interface PublicQuestion {
   id: string;
   text: string;
+  text_ar?: string;
   options: PublicOption[];
+}
+
+interface PublicTopics {
+  question: string;
+  question_ar: string;
+  min: number;
+  max: number;
+  items: { id: string; label: string; label_ar: string }[];
 }
 
 interface PublicQuestionSet {
   audience: 'participants' | 'trainers';
   version: string;
   questions: PublicQuestion[];
+  topics?: PublicTopics;
 }
 
 interface PublicRubric {

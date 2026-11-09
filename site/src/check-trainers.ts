@@ -15,11 +15,11 @@ runCheck({
     stages: {
       before: {
         label: 'Before the training',
-        intro: `${capitalise(count)} short questions about running this course. About 8 minutes. You will answer the same questions at the end of the training.`,
+        intro: `${capitalise(count)} questions about the ideas in this training, each with Arabic under it. About 10 minutes. You will answer the same questions at the end of the training.`,
       },
       after: {
         label: 'After the training',
-        intro: `The same ${count} questions you answered at the start. About 8 minutes. Answer with what you know now.`,
+        intro: `The same ${count} questions you answered at the start, then one short question about the topics that helped you most. About 10 minutes. Answer with what you know now.`,
       },
     },
     noteHtml:

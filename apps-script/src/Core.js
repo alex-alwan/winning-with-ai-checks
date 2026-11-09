@@ -184,13 +184,46 @@ function responseHeader_(spec) {
   h = h.concat(['Email', 'Score', 'Out of', 'Percent', 'Minutes', 'Submission ID']);
   spec.file.questions.forEach(function (q, i) { h.push('Q' + (i + 1) + ' correct'); });
   spec.file.questions.forEach(function (q, i) { h.push('Q' + (i + 1) + ' answer'); });
+  if (spec.file.topics) h.push('Topics');
   return h;
 }
 
 function publicQuestions_(spec) {
   return spec.file.questions.map(function (q) {
-    return { id: q.id, text: q.text, options: Object.keys(q.options).map(function (k) { return { id: k, text: q.options[k] }; }) };
+    var out = {
+      id: q.id,
+      text: q.text,
+      options: Object.keys(q.options).map(function (k) {
+        var o = { id: k, text: q.options[k] };
+        if (q.options_ar) o.text_ar = q.options_ar[k];
+        return o;
+      })
+    };
+    if (q.text_ar) out.text_ar = q.text_ar;
+    return out;
   });
+}
+
+function publicTopics_(spec) {
+  var t = spec.file.topics;
+  if (!t) return null;
+  return {
+    question: t.question, question_ar: t.question_ar, min: t.min, max: t.max,
+    items: t.items.map(function (i) { return { id: i.id, label: i.label, label_ar: i.label_ar }; })
+  };
+}
+
+// The end-of-training topics: min to max known ids, no repeats. Returned in the content file's order.
+function gradeTopics_(given, conf) {
+  var msg = 'Please choose ' + conf.min + ' to ' + conf.max + ' topics.';
+  if (!Array.isArray(given) || given.length < conf.min || given.length > conf.max) throw userError_('validation', msg);
+  var seen = {};
+  given.forEach(function (id) {
+    var known = conf.items.some(function (i) { return i.id === id; });
+    if (typeof id !== 'string' || !known || seen[id]) throw userError_('validation', msg);
+    seen[id] = true;
+  });
+  return conf.items.filter(function (i) { return seen[i.id]; }).map(function (i) { return i.id; });
 }
 
 // Checks every field and grades the answers. Throws a user error with a plain message.
@@ -221,14 +254,22 @@ function gradeCheck_(p, spec) {
     flags.push(ok);
     letters.push(a);
   });
+  var topics = [];
+  if (spec.file.topics && stage === 'After') topics = gradeTopics_(p.topics, spec.file.topics);
   var seconds = Number(p.seconds);
   if (!isFinite(seconds) || seconds < 0) seconds = 0;
   seconds = Math.min(seconds, 86400);
   return {
     stage: stage, cohort: cohort, name: name, email: email, org: org,
-    score: score, total: spec.file.questions.length, flags: flags, letters: letters,
+    score: score, total: spec.file.questions.length, flags: flags, letters: letters, topics: topics,
     minutes: Math.round(seconds / 6) / 10, submissionId: p.submissionId
   };
+}
+
+function topicLabel_(conf, id) {
+  var label = id;
+  conf.items.forEach(function (i) { if (i.id === id) label = i.label; });
+  return label;
 }
 
 function checkRecord_(g, spec, now) {
@@ -247,6 +288,9 @@ function checkRecord_(g, spec, now) {
   if (spec.hasOrg) r['Organisation'] = safe_(g.org);
   g.flags.forEach(function (f, i) { r['Q' + (i + 1) + ' correct'] = f; });
   g.letters.forEach(function (a, i) { r['Q' + (i + 1) + ' answer'] = a; });
+  if (spec.file.topics) {
+    r['Topics'] = safe_(g.topics.map(function (id) { return topicLabel_(spec.file.topics, id); }).join('; '));
+  }
   return r;
 }
 
@@ -257,6 +301,12 @@ function parseCheckRows_(table, spec) {
     var flags = [];
     for (var i = 0; i < qn; i++) flags.push(Number(cell_(v, idx, 'Q' + (i + 1) + ' correct')) === 1 ? 1 : 0);
     var cohort = clean_(unsafe_(cell_(v, idx, 'Cohort')));
+    var topicText = clean_(unsafe_(cell_(v, idx, 'Topics')));
+    var topics = !topicText ? [] : topicText.split(';').map(function (x) {
+      var label = clean_(x), id = label;
+      if (spec.file.topics) spec.file.topics.items.forEach(function (i) { if (i.label === label) id = i.id; });
+      return id;
+    }).filter(function (x) { return x; });
     return {
       time: toTime_(cell_(v, idx, 'Submitted at')),
       stage: String(cell_(v, idx, 'Stage')),
@@ -267,6 +317,7 @@ function parseCheckRows_(table, spec) {
       email: clean_(unsafe_(cell_(v, idx, 'Email'))).toLowerCase(),
       score: Number(cell_(v, idx, 'Score')) || 0,
       flags: flags,
+      topics: topics,
       submissionId: String(cell_(v, idx, 'Submission ID'))
     };
   }).filter(function (r) { return (r.stage === 'Before' || r.stage === 'After') && r.email; });
@@ -448,6 +499,23 @@ function readiness_(checkRows, scoreRows, rubric, bar) {
   return { trainers: trainers, ready: trainers.filter(function (t) { return t.ready; }).length, total: trainers.length };
 }
 
+function topicsSummary_(rows, conf) {
+  var latest = latestAttempts_(rows);
+  var answered = 0, counts = {};
+  conf.items.forEach(function (i) { counts[i.id] = 0; });
+  Object.keys(latest).forEach(function (k) {
+    var r = latest[k];
+    if (r.stage !== 'After' || !r.topics.length) return;
+    answered++;
+    r.topics.forEach(function (id) { if (hasOwn_(counts, id)) counts[id]++; });
+  });
+  var items = conf.items.map(function (i, n) {
+    return { id: i.id, label: i.label, count: counts[i.id], share: answered ? counts[i.id] / answered : 0, order: n };
+  });
+  items.sort(function (a, b) { return (b.count - a.count) || (a.order - b.order); });
+  return { answered: answered, max: conf.max, items: items };
+}
+
 function readinessHeadline_(r) {
   if (!r.total) return 'No trainers yet.';
   return r.ready + ' of ' + r.total + (r.total === 1 ? ' trainer meets' : ' trainers meet') + ' the readiness bar.';
@@ -534,7 +602,7 @@ function participantBlock_(L, title, s) {
   L.row([]);
 }
 
-function readinessLayout_(r, knowledge, bar, barStatus, outOf, rubric, updated) {
+function readinessLayout_(r, knowledge, bar, barStatus, outOf, rubric, updated, topics) {
   var lineNames = rubric.lines.map(function (l) { return l.name; });
   var header = ['Cohort', 'Name', 'Organisation', 'Email', 'Knowledge before', 'Knowledge after', 'Knowledge gain']
     .concat(lineNames).concat(['Number of scores', 'Ready to deliver alone']);
@@ -558,7 +626,20 @@ function readinessLayout_(r, knowledge, bar, barStatus, outOf, rubric, updated) 
     L.fmt(first, 8, r.trainers.length, lineNames.length, 'dec1');
     L.fmt(first, header.length, r.trainers.length, 1, 'ready');
   }
+  if (topics) topicsBlock_(L, topics);
   return L;
+}
+
+function topicsBlock_(L, t) {
+  L.row([]);
+  L.row([]);
+  L.fmt(L.row(['What helped trainers most (end of the training)']), 1, 1, 1, 'blockTitle');
+  L.fmt(L.row([t.answered
+    ? t.answered + (t.answered === 1 ? ' trainer' : ' trainers') + ' chose up to ' + t.max + ' topics. Only the latest end-of-training answer per trainer counts.'
+    : 'No trainer has chosen topics yet. The question comes after the 10 questions at the end of the training.']), 1, 1, 1, 'muted');
+  L.table(['Topic', 'Trainers who chose it', 'Share of trainers'], t.items.map(function (i) {
+    return [i.label, i.count, t.answered ? i.share : ''];
+  }), { 3: 'pct' });
 }
 
 function knowledgeLine_(s) {
@@ -636,7 +717,10 @@ function handle_(payload, deps) {
 function getQuestions_(p, deps) {
   var spec = audienceSpec_(deps.content, p.audience);
   if (!spec) throw userError_('validation', MSG.badRequest);
-  return { ok: true, audience: spec.audience, version: spec.version, questions: publicQuestions_(spec) };
+  var out = { ok: true, audience: spec.audience, version: spec.version, questions: publicQuestions_(spec) };
+  var topics = publicTopics_(spec);
+  if (topics) out.topics = topics;
+  return out;
 }
 
 function submitCheck_(p, deps) {
@@ -809,8 +893,9 @@ function rebuildReadiness_(deps) {
   var bar = readinessBar_(deps);
   var r = readiness_(checks, scores, rubric, bar);
   var knowledge = summarizeChecks_(checks, spec.file.questions);
+  var topics = spec.file.topics ? topicsSummary_(checks, spec.file.topics) : null;
   deps.store.writeLayout(TABS.tReadiness, readinessLayout_(r, knowledge, bar, rubric.readiness_bar.status,
-    spec.file.questions.length, rubric, deps.stamp(deps.now())));
+    spec.file.questions.length, rubric, deps.stamp(deps.now()), topics));
 }
 
 function rebuildAll_(deps) {
@@ -850,7 +935,7 @@ if (typeof module !== 'undefined' && module.exports) {
     mergeHeader_: mergeHeader_, rowFor_: rowFor_, indexOf_: indexOf_, prettyDate_: prettyDate_, normalizeDay_: normalizeDay_,
     audienceSpec_: audienceSpec_, responseHeader_: responseHeader_, gradeCheck_: gradeCheck_, checkRecord_: checkRecord_,
     parseCheckRows_: parseCheckRows_, latestAttempts_: latestAttempts_, latestScore_: latestScore_,
-    summarizeChecks_: summarizeChecks_, checksHeadline_: checksHeadline_,
+    summarizeChecks_: summarizeChecks_, checksHeadline_: checksHeadline_, topicsSummary_: topicsSummary_, gradeTopics_: gradeTopics_,
     parseConfig_: parseConfig_, windowCheck_: windowCheck_,
     scoreHeader_: scoreHeader_, parseScoreRows_: parseScoreRows_, readiness_: readiness_, readinessHeadline_: readinessHeadline_,
     participantSummaryLayout_: participantSummaryLayout_, readinessLayout_: readinessLayout_, knowledgeLine_: knowledgeLine_,
