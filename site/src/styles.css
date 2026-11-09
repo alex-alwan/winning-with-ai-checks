@@ -103,8 +103,8 @@ h2:focus, h2:focus-visible, .saved:focus { outline: none; }
 [lang=ar] { font-family: var(--arabic); }
 .qtext-ar { font-size: 18px; line-height: 1.8; color: var(--body); text-align: right; margin: -8px 0 20px; }
 .tx { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 0; }
-.t-ar { font-size: 16px; line-height: 1.8; color: var(--body); text-align: right; }
-.inline-ar { display: inline-block; }
+.t-ar { font-size: 17px; line-height: 1.8; color: var(--body); text-align: right; }
+.line-ar { display: block; text-align: right; margin-top: 2px; }
 .topics legend { display: block; width: 100%; padding: 0; margin-bottom: 6px; }
 .topics legend:focus { outline: none; }
 .topics legend .qtext { display: block; margin-bottom: 10px; }
@@ -118,7 +118,7 @@ h2:focus, h2:focus-visible, .saved:focus { outline: none; }
   content: ""; width: 6px; height: 11px; border: solid var(--white); border-width: 0 2.5px 2.5px 0;
   transform: translate(0, -1px) rotate(45deg);
 }
-.opt.off { opacity: .5; cursor: default; }
+.opt.off { opacity: .7; cursor: default; }
 .opt.off:hover { border-color: var(--line-strong); }
 .count-live { font-size: 14px; font-weight: 600; color: var(--muted); margin: 14px 0 6px; }
 

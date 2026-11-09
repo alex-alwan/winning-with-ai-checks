@@ -82,7 +82,7 @@ The questions live in three files, and nowhere else:
 - `content/trainer-questions.json`
 - `content/teachback-rubric.json`
 
-1. Edit the file (text, options, `key` for the right answer, `skill`). In the trainer file, every question also has `text_ar` and `options_ar` (the Arabic), and `topics` holds the end-of-training topic question. The build stops if any Arabic is missing.
+1. Edit the file (text, options, `key` for the right answer, `skill`). In the trainer file, every question also has `text_ar` and `options_ar` (the Arabic), and `topics` holds the end-of-training topic question. The build stops if any Arabic is missing. Do not rename a topic once trainers have answered: answers are stored by the topic's English name, so add a new topic instead.
 2. Run one command on a computer with this repo: `npm run build`. It checks the files, rebuilds the site and the script, and stops if anything is wrong (for example a key that is not one of the options, or a dash the writing rules forbid).
 3. Redeploy both parts (below).
 4. For the trainer check, run `node scripts/print-trainer-check.mjs` to refresh `docs/trainer-check.md`, the review copy with both languages and the answer key (course team only).

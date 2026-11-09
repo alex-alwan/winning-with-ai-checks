@@ -533,7 +533,8 @@ describe('end-of-training topics (trainers)', () => {
     expect(col).toContain('What helped trainers most (end of the training)');
     expect(col).toContain('2 trainers chose up to 3 topics. Only the latest end-of-training answer per trainer counts.');
     const top = col.indexOf('Topic');
-    expect(L.values[top + 1].slice(0, 3)).toEqual([items.find((i) => i.id === 'facts').label, 2, 1]);
+    expect(L.values[top + 1].slice(0, 6)).toEqual([items.find((i) => i.id === 'facts').label, '', '', '', 2, 1]);
+    expect(L.formats.filter((f) => f.kind === 'merge' && f.nc === 4)).toHaveLength(items.length + 1);
   });
 
   it('serves the Arabic text and the topic question with the trainer questions, never the keys', () => {

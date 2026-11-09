@@ -304,7 +304,7 @@ function parseCheckRows_(table, spec) {
     var topicText = clean_(unsafe_(cell_(v, idx, 'Topics')));
     var topics = !topicText ? [] : topicText.split(';').map(function (x) {
       var label = clean_(x), id = label;
-      if (spec.file.topics) spec.file.topics.items.forEach(function (i) { if (i.label === label) id = i.id; });
+      if (spec.file.topics) spec.file.topics.items.forEach(function (i) { if (i.label === label || i.id === label) id = i.id; });
       return id;
     }).filter(function (x) { return x; });
     return {
@@ -637,9 +637,15 @@ function topicsBlock_(L, t) {
   L.fmt(L.row([t.answered
     ? t.answered + (t.answered === 1 ? ' trainer' : ' trainers') + ' chose up to ' + t.max + ' topics. Only the latest end-of-training answer per trainer counts.'
     : 'No trainer has chosen topics yet. The question comes after the 10 questions at the end of the training.']), 1, 1, 1, 'muted');
-  L.table(['Topic', 'Trainers who chose it', 'Share of trainers'], t.items.map(function (i) {
-    return [i.label, i.count, t.answered ? i.share : ''];
-  }), { 3: 'pct' });
+  // the topic name spans columns A to D, which are narrow on their own
+  var h = L.row(['Topic', '', '', '', 'Trainers who chose it', 'Share of trainers']);
+  L.fmt(h, 1, 1, 6, 'header');
+  L.fmt(h, 1, 1, 4, 'merge');
+  t.items.forEach(function (i) {
+    var r = L.row([i.label, '', '', '', i.count, t.answered ? i.share : '']);
+    L.fmt(r, 1, 1, 4, 'merge');
+    L.fmt(r, 6, 1, 1, 'pct');
+  });
 }
 
 function knowledgeLine_(s) {

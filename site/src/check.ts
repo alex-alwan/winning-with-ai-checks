@@ -297,7 +297,7 @@ export function runCheck(c: CheckConfig): void {
     setText($('tQ'), topicConf.question);
     setText($('tQAr'), topicConf.question_ar);
     $('tHint').innerHTML = '';
-    $('tHint').append(`Choose up to ${topicConf.max} topics. `, arabicSpan(`اختر حتى ${topicConf.max} مواضيع.`));
+    $('tHint').append(`Choose up to ${topicConf.max} topics.`, arabicLine(`اختر ${topicConf.max} مواضيع على الأكثر.`));
     setText($('tErr'), '');
     const box = $('tOpts');
     box.innerHTML = '';
@@ -338,7 +338,11 @@ export function runCheck(c: CheckConfig): void {
     });
     const count = $('tCount');
     count.innerHTML = '';
-    count.append(`${k} of ${topicConf.max} chosen. `, arabicSpan(`اخترت ${k} من ${topicConf.max}.`));
+    const full = k >= topicConf.max;
+    count.append(
+      `${k} of ${topicConf.max} chosen.` + (full ? ' To change, tap a chosen topic to remove it.' : ''),
+      arabicLine(`اخترت ${k} من ${topicConf.max}.` + (full ? ' للتغيير، اضغط على موضوع اخترته لإلغائه.' : '')),
+    );
   }
 
   $('tForm').addEventListener('submit', (e) => {
@@ -347,7 +351,7 @@ export function runCheck(c: CheckConfig): void {
     if ((s.topics || []).length < topicConf.min) {
       const err = $('tErr');
       err.innerHTML = '';
-      err.append('Please choose at least one topic. ', arabicSpan('يرجى اختيار موضوع واحد على الأقل.'));
+      err.append('Please choose at least one topic.', arabicLine('يرجى اختيار موضوع واحد على الأقل.'));
       (document.querySelector('#tOpts input:not(:disabled)') as HTMLInputElement | null)?.focus();
       return;
     }
@@ -449,11 +453,12 @@ function optionText(en: string, ar?: string): HTMLElement {
   return wrap;
 }
 
-function arabicSpan(text: string): HTMLElement {
+// an Arabic sentence on its own line under the English one
+function arabicLine(text: string): HTMLElement {
   const a = document.createElement('span');
   a.lang = 'ar';
   a.dir = 'rtl';
-  a.className = 'inline-ar';
+  a.className = 'line-ar';
   a.textContent = text;
   return a;
 }

@@ -86,7 +86,7 @@ function tabIndex_(ss, name) {
 }
 
 var TEXT_COLUMNS = ['Stage', 'Cohort', 'Name', 'Organisation', 'Email', 'Submission ID', 'Scorer', 'Role',
-  'Trainee name', 'Trainee email', 'Course part', 'Comment'];
+  'Trainee name', 'Trainee email', 'Course part', 'Comment', 'Topics'];
 
 // The number format for each column, so Sheets never turns a cohort like "Jan-26" into a date.
 function columnFormat_(h) {
@@ -215,6 +215,7 @@ function writeLayout_(ss, name, L) {
       case 'pctChange': rg.setNumberFormat('+0%;-0%;0%'); break;
       case 'intChange': rg.setNumberFormat('+0;-0;0'); break;
       case 'wrap': rg.setWrap(true); break;
+      case 'merge': rg.merge(); break;
       case 'ready': rg.setFontWeight('bold'); break;
     }
   });
