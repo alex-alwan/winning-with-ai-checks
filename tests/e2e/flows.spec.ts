@@ -289,7 +289,7 @@ test.describe('teach-back scoring', () => {
     // nothing is saved until every line has a score
     await page.locator('#scorer').fill('Alex Alwan');
     await page.locator('label.opt', { hasText: 'Lead trainer' }).click();
-    await page.locator('#part').selectOption('Lab 2 · Give AI the right facts');
+    await page.locator('#part').selectOption('Give AI the right facts');
     await page.locator('#trainee').selectOption({ label: 'Zaid Nasser · ZINC' });
     await page.locator('label.sc', { has: page.locator('input[name="line-timing"][value="4"]') }).click();
     await page.getByRole('button', { name: 'Save score' }).click();
@@ -309,12 +309,12 @@ test.describe('teach-back scoring', () => {
     await tapTargets(page);
     await shot(page, info, '09-score-form-filled');
     await page.getByRole('button', { name: 'Save score' }).click();
-    await expect(page.locator('#savedMsg')).toHaveText('Saved: Zaid Nasser, Lab 2 · Give AI the right facts. Choose the next trainer below, and check the course part.');
+    await expect(page.locator('#savedMsg')).toHaveText('Saved: Zaid Nasser, Give AI the right facts. Choose the next trainer below, and check the course part.');
     await expect(page.locator('#trainee option')).toHaveText(['Choose a name', 'Amal Khoury · Oasis500', 'Zaid Nasser · ZINC · scored']);
 
     // kept: scorer and part; cleared: trainee and scores
     await expect(page.locator('#scorer')).toHaveValue('Alex Alwan');
-    await expect(page.locator('#part')).toHaveValue('Lab 2 · Give AI the right facts');
+    await expect(page.locator('#part')).toHaveValue('Give AI the right facts');
     await expect(page.locator('input[name="role"][value="lead"]')).toBeChecked();
     await expect(page.locator('#trainee')).toHaveValue('');
     await expect(page.locator('#scoreForm input[name^="line-"]:checked')).toHaveCount(0);
@@ -325,7 +325,7 @@ test.describe('teach-back scoring', () => {
     expect(saved).toHaveLength(1);
     expect(saved[0]).toMatchObject({
       Cohort: 'ToT-E2E', Scorer: 'Alex Alwan', Role: 'Lead trainer', 'Trainee name': 'Zaid Nasser', 'Trainee email': 'zaid@example.com',
-      'Course part': 'Lab 2 · Give AI the right facts', Timing: 4, Clarity: 3, Practice: 4, 'Judgment and safety': 3, Comment: 'Calm, clear, kept to time.',
+      'Course part': 'Give AI the right facts', Timing: 4, Clarity: 3, Practice: 4, 'Judgment and safety': 3, Comment: 'Calm, clear, kept to time.',
     });
 
     // someone missing from the list: type their name and email
@@ -336,7 +336,7 @@ test.describe('teach-back scoring', () => {
       await page.locator('label.sc', { has: page.locator(`input[name="line-${line}"][value="2"]`) }).click();
     }
     await page.getByRole('button', { name: 'Save score' }).click();
-    await expect(page.locator('#savedMsg')).toContainText('Saved: Huda Saleh, Lab 2');
+    await expect(page.locator('#savedMsg')).toContainText('Saved: Huda Saleh, Give AI the right facts');
     expect((await rows(request, S_TAB)).map((r) => r['Trainee email'])).toEqual(['zaid@example.com', 'huda@example.com']);
 
     const readiness = (await control(request, { op: 'read' })).layouts['Trainers · Readiness'];

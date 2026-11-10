@@ -14,7 +14,7 @@
   {
    "id": "clarity",
    "name": "Clarity",
-   "four_looks_like": "Plain words, one instruction at a time, uses the slide and notes; reads each practice's steps, then says them once in Arabic with the glossary's terms"
+   "four_looks_like": "Plain words, one instruction at a time, uses the slide and notes; reads each exercise's steps, then says them once in plain Arabic"
   },
   {
    "id": "practice",
@@ -35,12 +35,12 @@
  },
  "course_parts": [
   "Opening talk",
-  "Module 1 · Find a real problem",
-  "Lab 1 · How AI learns, and where it goes wrong",
-  "Module 2 · Build and launch a test",
-  "Module 3 · Read the results and sell",
-  "Lab 2 · Give AI the right facts",
-  "Lab 3 · AI does one job, you approve",
-  "Module 4 · Serve, run and demo day"
+  "Find a real problem",
+  "How AI learns, and where it goes wrong",
+  "Build and launch a test",
+  "Read the results and sell",
+  "Give AI the right facts",
+  "AI does one job, you approve",
+  "Test AI before it answers customers, and demo day"
  ]
 }

@@ -103,6 +103,17 @@ export function validateQuestions(file, audience) {
       });
     }
   }
+  // trainer check: the right answer must be shorter than the longest wrong one, in both languages,
+  // so picking the longest option is not a way to pass
+  if (audience === 'trainers') {
+    for (const q of file.questions) {
+      for (const [lang, opts] of [['English', q.options], ['Arabic', q.options_ar]]) {
+        if (!opts) continue;
+        const longestWrong = Math.max(...Object.keys(opts).filter((k) => k !== q.key).map((k) => opts[k].length));
+        if (opts[q.key].length >= longestWrong) fail(`${q.id} right answer is the longest ${lang} option (${opts[q.key].length} vs ${longestWrong})`);
+      }
+    }
+  }
   if (file.topics) validateTopics(file.topics, audience);
 }
 

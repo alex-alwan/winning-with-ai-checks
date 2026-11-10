@@ -54,7 +54,7 @@ expect(r.ok && r.trainees.length === 1, 'trainee list');
 const id = r.ok && r.trainees[0] ? r.trainees[0].id : '';
 r = await call({
   action: 'submitScore', code: CODE, device: 'live-test', cohort: 'TEST', scorer: 'Test Scorer', role: 'lead',
-  part: 'Lab 2 · Give AI the right facts', trainee: { id }, scores: { timing: 4, clarity: 3, practice: 4, judgment: 3 },
+  part: 'Give AI the right facts', trainee: { id }, scores: { timing: 4, clarity: 3, practice: 4, judgment: 3 },
   comment: 'Live test', submissionId: randomUUID(),
 });
 expect(r.ok && r.trainee === 'Test Trainer', 'teach-back score');

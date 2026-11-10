@@ -377,7 +377,7 @@ describe('teach-back scoring API', () => {
   }
   const score = (over = {}) => ({
     action: 'submitScore', code: 'code-1234', device: 'd1', cohort: 'ToT', scorer: 'Alex Alwan', role: 'lead',
-    part: 'Lab 2 · Give AI the right facts', scores: { timing: 4, clarity: 3, practice: 4, judgment: 3 },
+    part: 'Give AI the right facts', scores: { timing: 4, clarity: 3, practice: 4, judgment: 3 },
     comment: 'Clear and calm.', submissionId: sid(), ...over,
   });
 
@@ -395,7 +395,7 @@ describe('teach-back scoring API', () => {
     expect(env.handle(score({ role: 'peer', scorer: 'Peer One', trainee: { name: 'New Person', email: 'New@x.io' } }))).toMatchObject({ ok: true });
     const t = env.table(Core.TABS.tScores);
     expect(t.header).toEqual(['Submitted at', 'Cohort', 'Scorer', 'Role', 'Trainee name', 'Trainee email', 'Course part', 'Timing', 'Clarity', 'Practice', 'Judgment and safety', 'Comment', 'Submission ID']);
-    expect(t.rows[0].slice(1, 11)).toEqual(['ToT', 'Alex Alwan', 'Lead trainer', 'Zaid Nasser', 'zaid@x.io', 'Lab 2 · Give AI the right facts', 4, 3, 4, 3]);
+    expect(t.rows[0].slice(1, 11)).toEqual(['ToT', 'Alex Alwan', 'Lead trainer', 'Zaid Nasser', 'zaid@x.io', 'Give AI the right facts', 4, 3, 4, 3]);
     expect(t.rows[1].slice(3, 6)).toEqual(['Peer', 'New Person', 'new@x.io']);
     const layout = env.layouts.get(Core.TABS.tReadiness);
     expect(layout.values[1][0]).toBe('0 of 4 trainers meet the readiness bar.');
@@ -549,3 +549,19 @@ describe('end-of-training topics (trainers)', () => {
   });
 });
 
+
+describe('content checks', () => {
+  it('refuses a trainer question whose right answer is the longest option, in either language', async () => {
+    const { validateQuestions } = await import('../../scripts/content.mjs');
+    const { readFileSync } = await import('node:fs');
+    const file = JSON.parse(readFileSync(new URL('../../content/trainer-questions.json', import.meta.url), 'utf8'));
+    expect(() => validateQuestions(file, 'trainers')).not.toThrow();
+    const q = file.questions[0];
+    const en = structuredClone(file);
+    en.questions[0].options[q.key] += ' and this makes it the longest of them all by far';
+    expect(() => validateQuestions(en, 'trainers')).toThrow(/tq1 right answer is the longest English option/);
+    const ar = structuredClone(file);
+    ar.questions[0].options_ar[q.key] += ' وهذا يجعلها أطول خيار بفارق كبير جداً عن البقية';
+    expect(() => validateQuestions(ar, 'trainers')).toThrow(/tq1 right answer is the longest Arabic option/);
+  });
+});

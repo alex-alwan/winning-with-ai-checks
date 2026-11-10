@@ -13,7 +13,7 @@ Winning with AI · Course check and Trainer check
 | When | Show this | Who |
 | --- | --- | --- |
 | Day 1, before the opening talk | Projector: **start of the course** | Participants |
-| Day 2, after the Module 4 close | Projector: **end of the course** | Participants |
+| Day 2, at the close of the course | Projector: **end of the course** | Participants |
 | ToT Day 1, first thing | Projector: **trainer check start** | Trainers |
 | ToT Day 2, at the end | Projector: **trainer check end** | Trainers |
 | ToT Day 2, teach-backs | **Teach-back scoring** link, sent only to scorers | Lead trainer and peers |

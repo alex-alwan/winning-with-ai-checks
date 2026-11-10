@@ -35,7 +35,7 @@ for (const q of [...participants.questions, ...trainers.questions]) {
   forbidden.push({ name: `${q.id} skill "${q.skill}"`, re: new RegExp(q.skill.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')), skillOnly: true });
 }
 for (const { f, s } of all) {
-  // skill names also appear inside course part names (for example "Module 1 · Find a real problem"),
+  // skill names also appear inside course part names (for example "Find a real problem"),
   // which the scoring page needs, so those are taken out before looking for skills
   const withoutParts = rubric.course_parts.reduce((acc, p) => acc.split(JSON.stringify(p).slice(1, -1)).join(''), s);
   for (const x of forbidden) {
