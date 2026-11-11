@@ -23,6 +23,7 @@ export interface CheckConfig {
   content: PublicQuestionSet;
   copy: CheckCopy;
   askOrg: boolean;
+  showScore?: boolean; // the end screen shows the score; default true
 }
 
 interface Saved {
@@ -405,7 +406,7 @@ export function runCheck(c: CheckConfig): void {
       const p = document.createElement('p');
       p.textContent = c.copy.doneBefore;
       body.appendChild(p);
-    } else {
+    } else if (c.showScore !== false) {
       const total = Number(r.total);
       const cmp = document.createElement('div');
       cmp.className = 'cmp';
@@ -426,6 +427,10 @@ export function runCheck(c: CheckConfig): void {
         p2.textContent = c.copy.doneAfter;
         body.appendChild(p2);
       }
+    } else if (c.copy.doneAfter) {
+      const p = document.createElement('p');
+      p.textContent = c.copy.doneAfter;
+      body.appendChild(p);
     }
     store.remove('session', key());
     s = null;

@@ -237,8 +237,9 @@ test.describe('trainer knowledge check', () => {
     await expect(page.locator('#qCount')).toHaveText('Question 7 of 7');
     await page.locator('#nextBtn').click();
     await page.locator('#tSubmit').click();
-    await expect(page.locator('.cmp > div').nth(0)).toHaveText(/5 \/ 7\s*Start of training/);
-    await expect(page.locator('.cmp > div').nth(1)).toHaveText(/6 \/ 7\s*Today/);
+    // trainers see no score on the end screen (Alex, 11 Nov)
+    await expect(page.locator('#doneBody')).toHaveText('Thank you for taking part in the training.');
+    await expect(page.locator('.cmp')).toHaveCount(0);
     await shot(page, info, '07-trainer-done-after');
     const saved = await rows(request, T_TAB);
     expect(saved.map((r) => [r.Stage, r.Organisation, r.Score, r['Out of']])).toEqual([['Before', 'ZINC', 5, 7], ['After', 'ZINC', 6, 7]]);
