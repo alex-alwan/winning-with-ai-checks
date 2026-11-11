@@ -636,7 +636,7 @@ function topicsBlock_(L, t) {
   L.fmt(L.row(['What helped trainers most (end of the training)']), 1, 1, 1, 'blockTitle');
   L.fmt(L.row([t.answered
     ? t.answered + (t.answered === 1 ? ' trainer' : ' trainers') + ' chose up to ' + t.max + ' topics. Only the latest end-of-training answer per trainer counts.'
-    : 'No trainer has chosen topics yet. The question comes after the 9 questions at the end of the training.']), 1, 1, 1, 'muted');
+    : 'No trainer has chosen topics yet. The question comes after the 7 questions at the end of the training.']), 1, 1, 1, 'muted');
   // the topic name spans columns A to D, which are narrow on their own
   var h = L.row(['Topic', '', '', '', 'Trainers who chose it', 'Share of trainers']);
   L.fmt(h, 1, 1, 6, 'header');

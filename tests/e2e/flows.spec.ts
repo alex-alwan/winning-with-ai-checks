@@ -176,7 +176,7 @@ test.describe('trainer knowledge check', () => {
   test('before, then after, with organisation, Arabic under every question, and topics at the end', async ({ page, request }, info) => {
     await page.goto('/trainer?stage=before&cohort=ToT-E2E');
     await expect(page.locator('#stageLabel')).toHaveText('Before the training');
-    await expect(page.locator('#intro')).toHaveText('Nine questions about the ideas in this training, each with Arabic under it. About 10 minutes. You will answer the same questions at the end of the training.');
+    await expect(page.locator('#intro')).toHaveText('Seven questions about the ideas in this training, each with Arabic under it. About 10 minutes. You will answer the same questions at the end of the training.');
     await expect(page.locator('.note')).not.toContainText('Rania');
     await noHorizontalScroll(page);
     await tapTargets(page);
@@ -185,7 +185,7 @@ test.describe('trainer knowledge check', () => {
     await expect(page.locator('#startErr')).toHaveText('Please write the name of your organisation.');
     await start(page, 'Zaid Nasser', 'zaid@example.com', 'ZINC');
     let checked = false;
-    await answerAll(page, trainerQs, 6, async () => {
+    await answerAll(page, trainerQs, 5, async () => {
       if (checked) return;
       checked = true;
       // the Arabic of this very question and of every option is on screen, right to left
@@ -209,7 +209,7 @@ test.describe('trainer knowledge check', () => {
     await page.goto('/trainer?stage=after&cohort=ToT-E2E');
     await expect(page.locator('#stageLabel')).toHaveText('After the training');
     await start(page, 'Zaid Nasser', 'zaid@example.com', 'ZINC');
-    await answerAll(page, trainerQs, 8, undefined, 'Next');
+    await answerAll(page, trainerQs, 6, undefined, 'Next');
 
     // the last step: topics, 1 to 3, in English and Arabic
     await expect(page.locator('#s-topics')).toBeVisible();
@@ -234,14 +234,14 @@ test.describe('trainer knowledge check', () => {
     await expect(page.locator('#s-topics')).toBeVisible();
     await expect(page.locator('#tOpts input:checked')).toHaveCount(3);
     await page.locator('#tBack').click();
-    await expect(page.locator('#qCount')).toHaveText('Question 9 of 9');
+    await expect(page.locator('#qCount')).toHaveText('Question 7 of 7');
     await page.locator('#nextBtn').click();
     await page.locator('#tSubmit').click();
-    await expect(page.locator('.cmp > div').nth(0)).toHaveText(/6 \/ 9\s*Start of training/);
-    await expect(page.locator('.cmp > div').nth(1)).toHaveText(/8 \/ 9\s*Today/);
+    await expect(page.locator('.cmp > div').nth(0)).toHaveText(/5 \/ 7\s*Start of training/);
+    await expect(page.locator('.cmp > div').nth(1)).toHaveText(/6 \/ 7\s*Today/);
     await shot(page, info, '07-trainer-done-after');
     const saved = await rows(request, T_TAB);
-    expect(saved.map((r) => [r.Stage, r.Organisation, r.Score, r['Out of']])).toEqual([['Before', 'ZINC', 6, 9], ['After', 'ZINC', 8, 9]]);
+    expect(saved.map((r) => [r.Stage, r.Organisation, r.Score, r['Out of']])).toEqual([['Before', 'ZINC', 5, 7], ['After', 'ZINC', 6, 7]]);
     expect(saved[0].Topics).toBe('');
     expect(saved[1].Topics).toBe([trainerTopics[1], trainerTopics[2], trainerTopics[4]].map((t) => t.label).join('; '));
     const readiness = (await control(request, { op: 'read' })).layouts['Trainers · Readiness'].map((r) => r[0]);

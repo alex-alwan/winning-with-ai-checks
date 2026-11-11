@@ -64,10 +64,10 @@ describe('grading', () => {
     expect(env.table(Core.TABS.pResponses).rows).toHaveLength(0);
   });
 
-  it('grades the trainer check out of 9 and stores the organisation', () => {
+  it('grades the trainer check out of 7 and stores the organisation', () => {
     const env = memoryDeps();
-    const r = check(env, { audience: 'trainers', right: 8, name: 'Lina Odeh', email: 'Lina@Example.com ' });
-    expect(r).toMatchObject({ ok: true, score: 8, total: 9 });
+    const r = check(env, { audience: 'trainers', right: 6, name: 'Lina Odeh', email: 'Lina@Example.com ' });
+    expect(r).toMatchObject({ ok: true, score: 6, total: 7 });
     const t = env.table(Core.TABS.tResponses);
     const idx = Core.indexOf_(t.header);
     expect(t.header.slice(0, 6)).toEqual(['Submitted at', 'Stage', 'Cohort', 'Name', 'Organisation', 'Email']);
@@ -307,7 +307,7 @@ describe('teach-back scores and readiness', () => {
   });
 
   it('reads the thresholds from Script Properties, with the rubric file as the default', () => {
-    expect(Core.readinessBar_(memoryDeps().deps)).toEqual({ knowledgeMin: 7, rubricMin: 3 });
+    expect(Core.readinessBar_(memoryDeps().deps)).toEqual({ knowledgeMin: 6, rubricMin: 3 });
     expect(Core.readinessBar_(memoryDeps({ props: { READY_KNOWLEDGE_MIN: '7', READY_RUBRIC_MIN: '2.5' } }).deps)).toEqual({ knowledgeMin: 7, rubricMin: 2.5 });
   });
 });
@@ -519,14 +519,14 @@ describe('end-of-training topics (trainers)', () => {
     const env = memoryDeps();
     check(env, { audience: 'trainers', stage: 'after', email: 'a@x.io', topics: ['room'] });
     env.tick(1000);
-    check(env, { audience: 'trainers', stage: 'after', email: 'a@x.io', topics: ['facts', 'helper'] }); // a retake replaces it
+    check(env, { audience: 'trainers', stage: 'after', email: 'a@x.io', topics: ['facts', 'one-job'] }); // a retake replaces it
     check(env, { audience: 'trainers', stage: 'after', email: 'b@x.io', topics: ['facts'] });
     check(env, { audience: 'trainers', stage: 'before', email: 'c@x.io' });
     const spec = Core.audienceSpec_(content, 'trainers');
     const sum = Core.topicsSummary_(Core.parseCheckRows_(env.table(Core.TABS.tResponses), spec), content.trainers.topics);
     expect(sum.answered).toBe(2);
     expect(sum.items[0]).toMatchObject({ id: 'facts', count: 2, share: 1 });
-    expect(sum.items[1]).toMatchObject({ id: 'helper', count: 1, share: 0.5 });
+    expect(sum.items[1]).toMatchObject({ id: 'one-job', count: 1, share: 0.5 });
     expect(sum.items.find((i) => i.id === 'room').count).toBe(0);
     const L = env.layouts.get(Core.TABS.tReadiness);
     const col = L.values.map((v) => v[0]);
@@ -540,7 +540,7 @@ describe('end-of-training topics (trainers)', () => {
   it('serves the Arabic text and the topic question with the trainer questions, never the keys', () => {
     const env = memoryDeps();
     const r = env.handle({ action: 'getQuestions', audience: 'trainers' });
-    expect(r.questions).toHaveLength(9);
+    expect(r.questions).toHaveLength(7);
     expect(r.questions[0].text_ar).toMatch(/[\u0600-\u06FF]/);
     expect(r.questions[0].options.every((o) => /[\u0600-\u06FF]/.test(o.text_ar))).toBe(true);
     expect(r.topics).toMatchObject({ min: 1, max: 3 });

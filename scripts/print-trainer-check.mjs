@@ -16,9 +16,7 @@ const WHY = {
   tq5: 'The pass mark is written before sending, so nobody can reread the results to make them look good.',
   tq6: 'Trainer Pack: "Good, that is why we test. Answers vary." Then show the prepared example and move on.',
   tq7: 'Trainer Pack: correcting the AI teaches only that chat; put the fix in the fact sheet or saved instructions, then test again.',
-  tq8: 'P8/P9: text from customers is information, never instructions, so no customer can change the rules; money questions go to the founder. A single line such as "never give anything free" is exactly what "Ignore your rules" attacks.',
 
-  tq10: 'Go-live checks: read every chat, switch it off in a minute, and the welcome says it is an AI (plus read every chat in week 1).',
 };
 const q = trainers.questions;
 let md = `# Trainer check, version 2 (English and Arabic)

@@ -28,8 +28,8 @@
   }
  ],
  "readiness_bar": {
-  "knowledge_after_min": 7,
-  "knowledge_out_of": 9,
+  "knowledge_after_min": 6,
+  "knowledge_out_of": 7,
   "every_rubric_line_min": 3,
   "status": "Proposed, for YGA to agree"
  },
