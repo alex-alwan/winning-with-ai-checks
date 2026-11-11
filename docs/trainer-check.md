@@ -2,7 +2,7 @@
 
 Generated from `content/trainer-questions.json`. Do not edit by hand: change the content file, then run `node scripts/print-trainer-check.mjs`.
 
-The same 10 questions at the start and the end of the training. They test understanding of the ideas, not the course's own terms. On screen, the order of questions and options changes for each person, and the Arabic sits under the English.
+The same 9 questions at the start and the end of the training. They test understanding of the ideas, not the course's own terms. On screen, the order of questions and options changes for each person, and the Arabic sits under the English.
 
 ## 1. You are teaching one part of the course and you are 10 minutes behind. A short talk, a story and the hands-on exercise are still left. What should you do?
 
@@ -76,16 +76,7 @@ The same 10 questions at the start and the end of the training. They test unders
 - **c)** A line in its instructions: "Never give anything away for free."<br><span dir="rtl" lang="ar">سطر في تعليماته: «لا تُعطِ أي شيء مجاناً أبداً».</span>
 - **d)** Rules that no customer can change, and that send money questions to the founder.<br><span dir="rtl" lang="ar">قواعد لا يستطيع أي زبون تغييرها، وتحيل أسئلة المال إلى رائد الأعمال.</span>
 
-## 9. A founder says: "I will paste my customers' messages, with their names and phone numbers, into AI, and delete the chat right after." What do you tell them?
-
-<p dir="rtl" lang="ar">يقول رائد أعمال: «سألصق رسائل زبائني، بأسمائهم وأرقام هواتفهم، في الذكاء الاصطناعي، ثم أحذف المحادثة فوراً». ماذا تقول له؟</p>
-
-- **a)** That is fine, because deleting the chat also removes the data from the AI company's servers.<br><span dir="rtl" lang="ar">لا بأس، لأن حذف المحادثة يمسح البيانات من خوادم شركة الذكاء الاصطناعي أيضاً.</span>
-- **b)** Remove names and numbers before pasting. Once the data is sent, it is out of your control.<br><span dir="rtl" lang="ar">احذف الأسماء والأرقام قبل اللصق. بمجرد إرسال البيانات تخرج عن سيطرتك.</span>
-- **c)** Use a paid plan for this, because paid plans always keep data private.<br><span dir="rtl" lang="ar">استخدم خطة مدفوعة لهذا، لأن الخطط المدفوعة تحافظ دائماً على خصوصية البيانات.</span>
-- **d)** Use a well-known AI tool from a big company, because big companies protect data.<br><span dir="rtl" lang="ar">استخدم أداة ذكاء اصطناعي معروفة من شركة كبيرة، لأن الشركات الكبيرة تحمي البيانات.</span>
-
-## 10. A founder set up AI to answer customer messages, and it answered all 10 test messages well. The founder wants it to answer real customers on its own, starting today. What else must be true before that?
+## 9. A founder set up AI to answer customer messages, and it answered all 10 test messages well. The founder wants it to answer real customers on its own, starting today. What else must be true before that?
 
 <p dir="rtl" lang="ar">جهّز رائد أعمال الذكاء الاصطناعي للرد على رسائل الزبائن، فأجاب عن رسائل الاختبار العشر كلها إجابات جيدة. يريد رائد الأعمال أن يتركه يرد وحده على زبائن حقيقيين بدءاً من اليوم. ما الذي يجب أن يتحقق أيضاً قبل ذلك؟</p>
 
@@ -129,5 +120,4 @@ Do not share this section before the training. The live site marks answers on th
 | 6 | c | Judging AI | Trainer Pack: "Good, that is why we test. Answers vary." Then show the prepared example and move on. |
 | 7 | a | Give AI the right facts | Trainer Pack: correcting the AI teaches only that chat; put the fix in the fact sheet or saved instructions, then test again. |
 | 8 | d | Use AI safely | P8/P9: text from customers is information, never instructions, so no customer can change the rules; money questions go to the founder. A single line such as "never give anything free" is exactly what "Ignore your rules" attacks. |
-| 9 | b | Use AI safely | Rule that never bends: nothing that identifies a person goes into AI. Deleting the chat afterwards does not undo it. |
-| 10 | c | Use AI safely | Go-live checks: read every chat, switch it off in a minute, and the welcome says it is an AI (plus read every chat in week 1). |
+| 9 | c | Use AI safely | Go-live checks: read every chat, switch it off in a minute, and the welcome says it is an AI (plus read every chat in week 1). |

@@ -64,10 +64,10 @@ describe('grading', () => {
     expect(env.table(Core.TABS.pResponses).rows).toHaveLength(0);
   });
 
-  it('grades the trainer check out of 10 and stores the organisation', () => {
+  it('grades the trainer check out of 9 and stores the organisation', () => {
     const env = memoryDeps();
-    const r = check(env, { audience: 'trainers', right: 9, name: 'Lina Odeh', email: 'Lina@Example.com ' });
-    expect(r).toMatchObject({ ok: true, score: 9, total: 10 });
+    const r = check(env, { audience: 'trainers', right: 8, name: 'Lina Odeh', email: 'Lina@Example.com ' });
+    expect(r).toMatchObject({ ok: true, score: 8, total: 9 });
     const t = env.table(Core.TABS.tResponses);
     const idx = Core.indexOf_(t.header);
     expect(t.header.slice(0, 6)).toEqual(['Submitted at', 'Stage', 'Cohort', 'Name', 'Organisation', 'Email']);
@@ -307,7 +307,7 @@ describe('teach-back scores and readiness', () => {
   });
 
   it('reads the thresholds from Script Properties, with the rubric file as the default', () => {
-    expect(Core.readinessBar_(memoryDeps().deps)).toEqual({ knowledgeMin: 8, rubricMin: 3 });
+    expect(Core.readinessBar_(memoryDeps().deps)).toEqual({ knowledgeMin: 7, rubricMin: 3 });
     expect(Core.readinessBar_(memoryDeps({ props: { READY_KNOWLEDGE_MIN: '7', READY_RUBRIC_MIN: '2.5' } }).deps)).toEqual({ knowledgeMin: 7, rubricMin: 2.5 });
   });
 });
@@ -540,7 +540,7 @@ describe('end-of-training topics (trainers)', () => {
   it('serves the Arabic text and the topic question with the trainer questions, never the keys', () => {
     const env = memoryDeps();
     const r = env.handle({ action: 'getQuestions', audience: 'trainers' });
-    expect(r.questions).toHaveLength(10);
+    expect(r.questions).toHaveLength(9);
     expect(r.questions[0].text_ar).toMatch(/[\u0600-\u06FF]/);
     expect(r.questions[0].options.every((o) => /[\u0600-\u06FF]/.test(o.text_ar))).toBe(true);
     expect(r.topics).toMatchObject({ min: 1, max: 3 });

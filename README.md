@@ -3,7 +3,7 @@
 Two small websites and one Google Sheet that prove the course works.
 
 - **Participants** (founders) take the **Course check**: 12 questions at the start and at the end of the course.
-- **Trainers** take the **Trainer check**: 10 questions about the ideas in the training, in English with Arabic under each question and option, at the start and at the end of the Training of Trainers. At the end only, they also choose up to 3 topics that helped them most.
+- **Trainers** take the **Trainer check**: 9 questions about the ideas in the training, in English with Arabic under each question and option, at the start and at the end of the Training of Trainers. At the end only, they also choose up to 3 topics that helped them most.
 - During the training, scorers fill in the **teach-back scoring** form for each trainer.
 - Every answer lands in the Sheet **"Winning with AI · Course check results"**, which rebuilds its summaries by itself.
 
@@ -67,7 +67,7 @@ Menu **Course check > Delete TEST rows**. It removes only rows whose cohort is `
 
 ### Change the readiness bar
 
-The bar is "knowledge check after at least 8 of 10, and every teach-back line at least 3". To change it:
+The bar is "knowledge check after at least 7 of 9, and every teach-back line at least 3". To change it:
 
 1. In the Sheet: **Extensions > Apps Script**.
 2. **Project Settings** (the gear on the left) > **Script Properties**.

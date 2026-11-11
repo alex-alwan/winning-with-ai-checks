@@ -1,7 +1,7 @@
 {
  "title": "Winning with AI · Trainer check",
  "audience": "trainers",
- "note": "The same 10 questions at the start of ToT Day 1 and the end of ToT Day 2. They test understanding of the ideas in the training, not the course's own terms. Every question and option has an Arabic translation. Keys stay on the server. Version 2, 9 Nov 2026: replaces the 27 Oct questions (ids t1 to t10), which tested terms.",
+ "note": "The same 9 questions at the start of ToT Day 1 and the end of ToT Day 2. They test understanding of the ideas in the training, not the course's own terms. Every question and option has an Arabic translation. Keys stay on the server. Version 2, 9 Nov 2026: replaces the 27 Oct questions (ids t1 to t10), which tested terms.",
  "questions": [
   {
    "id": "tq1",
@@ -156,25 +156,6 @@
    "skill": "Use AI safely"
   },
   {
-   "id": "tq9",
-   "text": "A founder says: \"I will paste my customers' messages, with their names and phone numbers, into AI, and delete the chat right after.\" What do you tell them?",
-   "text_ar": "يقول رائد أعمال: «سألصق رسائل زبائني، بأسمائهم وأرقام هواتفهم، في الذكاء الاصطناعي، ثم أحذف المحادثة فوراً». ماذا تقول له؟",
-   "options": {
-    "a": "That is fine, because deleting the chat also removes the data from the AI company's servers.",
-    "b": "Remove names and numbers before pasting. Once the data is sent, it is out of your control.",
-    "c": "Use a paid plan for this, because paid plans always keep data private.",
-    "d": "Use a well-known AI tool from a big company, because big companies protect data."
-   },
-   "options_ar": {
-    "a": "لا بأس، لأن حذف المحادثة يمسح البيانات من خوادم شركة الذكاء الاصطناعي أيضاً.",
-    "b": "احذف الأسماء والأرقام قبل اللصق. بمجرد إرسال البيانات تخرج عن سيطرتك.",
-    "c": "استخدم خطة مدفوعة لهذا، لأن الخطط المدفوعة تحافظ دائماً على خصوصية البيانات.",
-    "d": "استخدم أداة ذكاء اصطناعي معروفة من شركة كبيرة، لأن الشركات الكبيرة تحمي البيانات."
-   },
-   "key": "b",
-   "skill": "Use AI safely"
-  },
-  {
    "id": "tq10",
    "text": "A founder set up AI to answer customer messages, and it answered all 10 test messages well. The founder wants it to answer real customers on its own, starting today. What else must be true before that?",
    "text_ar": "جهّز رائد أعمال الذكاء الاصطناعي للرد على رسائل الزبائن، فأجاب عن رسائل الاختبار العشر كلها إجابات جيدة. يريد رائد الأعمال أن يتركه يرد وحده على زبائن حقيقيين بدءاً من اليوم. ما الذي يجب أن يتحقق أيضاً قبل ذلك؟",
@@ -195,7 +176,7 @@
   }
  ],
  "topics": {
-  "note": "Shown only at the end of the training, after the 10 questions. Not scored. Do not rename a topic once trainers have answered: answers are stored by label, so add a new topic instead.",
+  "note": "Shown only at the end of the training, after the 9 questions. Not scored. Do not rename a topic once trainers have answered: answers are stored by label, so add a new topic instead.",
   "question": "Which topics from the training interested you most and made the biggest difference for you?",
   "question_ar": "ما المواضيع في التدريب التي أثارت اهتمامك أكثر وأحدثت أكبر فرق بالنسبة لك؟",
   "min": 1,

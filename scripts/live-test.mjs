@@ -45,8 +45,8 @@ expect(r.ok && r.score === 10 && r.before === 5, 'participant after with before 
 const trainer = { name: 'Test Trainer', email: 'test.trainer@example.com', organisation: 'Test Hub' };
 r = await check(trainers, 'trainers', 'before', 6, trainer);
 expect(r.ok && r.score === 6, 'trainer before');
-r = await check(trainers, 'trainers', 'after', 9, trainer);
-expect(r.ok && r.score === 9 && r.before === 6, 'trainer after');
+r = await check(trainers, 'trainers', 'after', 8, trainer);
+expect(r.ok && r.score === 8 && r.before === 6, 'trainer after');
 r = await call({ action: 'listTrainees', code: 'definitely-wrong', cohort: 'TEST', device: 'live-test' });
 expect(!r.ok && r.code === 'code', 'wrong code refused');
 r = await call({ action: 'listTrainees', code: CODE, cohort: 'TEST', device: 'live-test' });
