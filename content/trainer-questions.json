@@ -5,133 +5,133 @@
  "questions": [
   {
    "id": "tq1",
-   "text": "You are teaching one part of the course and you are 10 minutes behind. A short talk, a story and the hands-on exercise are still left. What should you do?",
-   "text_ar": "أنت تدرّس جزءاً من الدورة، ومتأخر عن الجدول 10 دقائق. بقي شرح قصير وقصة والتمرين العملي. ماذا تفعل؟",
+   "text": "You are 10 minutes behind schedule. You still have a short talk, a story and an exercise. What do you do?",
+   "text_ar": "تأخرت 10 دقائق عن الجدول، وبقي شرح قصير وقصة وتمرين. ماذا تفعل؟",
    "options": {
-    "a": "Keep the hands-on exercise and shorten the talk or the story, because founders learn by doing.",
-    "b": "Keep the talk and the story, and give the exercise as homework, because the ideas matter most.",
-    "c": "Do everything as planned and finish 10 minutes late, because every slide is needed.",
-    "d": "Move on to the next part now, and come back to this exercise at the end of the day if there is time."
+    "a": "Keep the exercise, and shorten the talk or the story.",
+    "b": "Keep the talk and the story, and give the exercise as homework.",
+    "c": "Do everything, and finish 10 minutes late.",
+    "d": "Skip the exercise, and move to the next part."
    },
    "options_ar": {
-    "a": "تُبقي التمرين العملي وتختصر الشرح أو القصة، لأن رواد الأعمال يتعلمون بالتطبيق.",
-    "b": "تُبقي الشرح والقصة وتجعل التمرين واجباً منزلياً، لأن الأفكار هي الأهم.",
-    "c": "تنفّذ كل شيء كما خُطّط له وتنتهي متأخراً 10 دقائق، لأن كل شريحة ضرورية.",
-    "d": "تنتقل إلى الجزء التالي الآن، وتعود إلى هذا التمرين في نهاية اليوم إن بقي لديك وقت."
+    "a": "تُبقي التمرين، وتختصر الشرح أو القصة.",
+    "b": "تُبقي الشرح والقصة، وتجعل التمرين واجباً منزلياً.",
+    "c": "تنفّذ كل شيء، وتنتهي متأخراً 10 دقائق.",
+    "d": "تلغي التمرين، وتنتقل إلى الجزء التالي."
    },
    "key": "a",
    "skill": "Teaching the room"
   },
   {
    "id": "tq2",
-   "text": "Founders have just finished an exercise. What is the best way to find out who has really understood it?",
-   "text_ar": "أنهى رواد الأعمال تمريناً للتو. ما أفضل طريقة لتعرف مَن فهمه فعلاً؟",
+   "text": "Founders have just finished an exercise. How do you find out who understood it?",
+   "text_ar": "أنهى رواد الأعمال تمريناً للتو. كيف تعرف مَن فهمه؟",
    "options": {
-    "a": "Ask the whole room \"Is everything clear?\" and move on when most of the people nod.",
-    "b": "Ask one or two of the strongest founders to explain the idea back to the whole room.",
-    "c": "Check everyone's work against the goal of the exercise, and go first to those who missed it.",
-    "d": "Wait for questions at the end of the day, because people usually ask for help when they are stuck."
+    "a": "Ask the room: \"Is everything clear?\"",
+    "b": "Ask the best founder to explain it to everyone.",
+    "c": "Check each person's work yourself.",
+    "d": "Wait for people to ask questions at the end of the day."
    },
    "options_ar": {
-    "a": "تسأل القاعة كلها: «هل كل شيء واضح؟» وتكمل عندما يومئ معظم الحاضرين برؤوسهم.",
-    "b": "تطلب من واحد أو اثنين من أقوى المشاركين أن يشرحا الفكرة للقاعة كلها.",
-    "c": "تراجع عمل كل شخص مقارنةً بهدف التمرين، ثم تساعد أولاً من لم يصل إليه.",
-    "d": "تنتظر الأسئلة في نهاية اليوم، لأن الناس عادةً يطلبون المساعدة عندما يتعثرون."
+    "a": "تسأل القاعة: «هل كل شيء واضح؟»",
+    "b": "تطلب من أفضل مشارك أن يشرحه للجميع.",
+    "c": "تراجع عمل كل شخص بنفسك.",
+    "d": "تنتظر أن يطرح الناس أسئلتهم في نهاية اليوم."
    },
    "key": "c",
    "skill": "Teaching the room"
   },
   {
    "id": "tq3",
-   "text": "A founder says: \"Everyone I told about my idea loved it, and they all said they would use it.\" Which of these best shows that the problem is real?",
-   "text_ar": "يقول رائد أعمال: «كل من أخبرته بفكرتي أحبها، وقالوا جميعاً إنهم سيستخدمونها». أيّ مما يلي أقوى دليل على أن المشكلة حقيقية؟",
+   "text": "A founder says: \"Everyone I told loved my idea.\" What best shows that the problem is real?",
+   "text_ar": "يقول رائد أعمال: «كل من أخبرته أحبّ فكرتي». ما أقوى دليل على أن المشكلة حقيقية؟",
    "options": {
-    "a": "The same answer from many more people, for example 50 people instead of 10.",
-    "b": "A recent report showing that the market for this kind of product is growing fast every year.",
-    "c": "Friends and family sharing the idea on social media with all of their contacts.",
-    "d": "People who already spend time or money today on their own way to solve it."
+    "a": "Many more people saying that they love the idea.",
+    "b": "A report saying that this market grows every year.",
+    "c": "Friends and family sharing the idea online.",
+    "d": "People already spend time or money to solve it."
    },
    "options_ar": {
-    "a": "الجواب نفسه من عدد أكبر بكثير من الناس، مثلاً 50 شخصاً بدل 10.",
-    "b": "تقرير حديث يُظهر أن سوق هذا النوع من المنتجات ينمو بسرعة كبيرة عاماً بعد عام.",
-    "c": "أن يشارك الأصدقاء والعائلة الفكرة على مواقع التواصل مع كل معارفهم.",
-    "d": "أشخاص ينفقون اليوم وقتاً أو مالاً على حلّ يدبّرونه بأنفسهم لهذه المشكلة."
+    "a": "عدد أكبر بكثير من الناس يقولون إنهم يحبون الفكرة.",
+    "b": "تقرير يقول إن هذا السوق ينمو كل عام.",
+    "c": "أصدقاء وأقارب يشاركون الفكرة على الإنترنت.",
+    "d": "أشخاص ينفقون اليوم وقتاً أو مالاً لحلّها."
    },
    "key": "d",
    "skill": "Find a real problem"
   },
   {
    "id": "tq4",
-   "text": "A founder plans to interview customers with this question: \"Would you use an app that reminds you to pay your bills?\" How should you help them improve it?",
-   "text_ar": "يخطط رائد أعمال لمقابلة زبائن بهذا السؤال: «هل ستستخدم تطبيقاً يذكّرك بدفع فواتيرك؟» كيف تساعده على تحسينه؟",
+   "text": "A founder wants to ask customers: \"Would you use an app that reminds you to pay your bills?\" What should they ask instead?",
+   "text_ar": "يريد رائد أعمال أن يسأل الزبائن: «هل ستستخدم تطبيقاً يذكّرك بدفع فواتيرك؟» ماذا يسأل بدلاً من ذلك؟",
    "options": {
-    "a": "Make it easier to measure: \"From 1 to 10, how likely are you to use this app?\"",
-    "b": "Ask about a real past event instead: \"Tell me about the last time you paid a bill late.\"",
-    "c": "Add a price to the question, so the person says whether they would pay for the app.",
-    "d": "Explain the app in detail first, so the person understands it well and gives a better answer."
+    "a": "\"From 1 to 10, how likely are you to use this app?\"",
+    "b": "\"When did you last pay a bill late?\"",
+    "c": "\"Would you pay 2 JD a month for this app?\"",
+    "d": "\"Do you like the idea of this app?\""
    },
    "options_ar": {
-    "a": "يجعل السؤال أسهل في القياس: «من 1 إلى 10، ما مدى احتمال أن تستخدم هذا التطبيق؟»",
-    "b": "يسأل بدلاً منه عن حدث حقيقي مضى: «حدّثني عن آخر مرة تأخرت فيها في دفع فاتورة».",
-    "c": "يضيف سعراً إلى السؤال، ليقول الشخص هل سيدفع مقابل التطبيق أم لا.",
-    "d": "يشرح التطبيق للشخص بالتفصيل أولاً، حتى يفهمه جيداً ويعطي جواباً أفضل."
+    "a": "«من 1 إلى 10، ما احتمال أن تستخدم هذا التطبيق؟»",
+    "b": "«متى تأخرت آخر مرة في دفع فاتورة؟»",
+    "c": "«هل ستدفع 2 دينار شهرياً مقابل هذا التطبيق؟»",
+    "d": "«هل تعجبك فكرة هذا التطبيق؟»"
    },
    "key": "b",
    "skill": "Find a real problem"
   },
   {
    "id": "tq5",
-   "text": "Why do we ask founders to write down the result that will count as success before they send their test to people?",
-   "text_ar": "لماذا نطلب من رواد الأعمال أن يكتبوا النتيجة التي ستُعدّ نجاحاً قبل أن يرسلوا اختبارهم إلى الناس؟",
+   "text": "Why do founders write down what will count as success before they test their idea?",
+   "text_ar": "لماذا يكتب رواد الأعمال ما سيُعدّ نجاحاً قبل أن يختبروا فكرتهم؟",
    "options": {
-    "a": "So the AI can calculate the result for them automatically, as soon as the replies come in.",
-    "b": "So everyone in the room uses the same target, and the results are fair.",
-    "c": "So they can show investors a clear goal from the very first day.",
-    "d": "So they cannot change what the results mean afterwards just to make them look good."
+    "a": "So AI can count the results for them automatically.",
+    "b": "So everyone in the room uses the same goal, and it is fair.",
+    "c": "So they can show investors a clear goal on day one.",
+    "d": "So they cannot change the goal after seeing the results."
    },
    "options_ar": {
-    "a": "حتى يحسب الذكاء الاصطناعي النتيجة لهم تلقائياً عندما تصل الردود.",
+    "a": "حتى يحسب الذكاء الاصطناعي النتائج لهم تلقائياً.",
     "b": "حتى يستخدم الجميع في القاعة الهدف نفسه، فتكون النتائج عادلة.",
-    "c": "حتى يعرضوا على المستثمرين هدفاً واضحاً منذ اليوم الأول.",
-    "d": "حتى لا يغيّروا معنى النتائج بعد ظهورها لمجرد أن تبدو جيدة."
+    "c": "حتى يعرضوا على المستثمرين هدفاً واضحاً من اليوم الأول.",
+    "d": "حتى لا يغيّروا الهدف بعد أن يروا النتائج."
    },
    "key": "d",
    "skill": "Read the results and decide"
   },
   {
    "id": "tq6",
-   "text": "During an exercise in a training session, you show the room a question that the AI got wrong when you tried it before. This time, it answers correctly. What is the best thing to say?",
-   "text_ar": "خلال تمرين في إحدى جلسات التدريب، تعرض على القاعة سؤالاً أخطأ فيه الذكاء الاصطناعي عندما جرّبته من قبل. هذه المرة أجاب عنه إجابة صحيحة. ما أفضل ما تقوله؟",
+   "text": "During an exercise in a training session, AI gets a question right that it got wrong before. What do you say?",
+   "text_ar": "خلال تمرين في إحدى جلسات التدريب، أجاب الذكاء الاصطناعي إجابة صحيحة عن سؤال أخطأ فيه من قبل. ماذا تقول؟",
    "options": {
-    "a": "\"The AI has learned from my earlier tries, so now it is fully reliable for this task.\"",
-    "b": "\"Sorry, I must have made a mistake before. Let us move on.\"",
-    "c": "\"Good: AI answers can change each time. That is why we test on many cases.\"",
-    "d": "\"Let me keep asking the same question until it gets it wrong, so you all see the mistake.\""
+    "a": "\"The AI learned from my earlier tries, so now it will always be right.\"",
+    "b": "\"Sorry, I made a mistake before.\"",
+    "c": "\"AI answers can change. That is why we test many times.\"",
+    "d": "\"Let me ask again until it gets it wrong.\""
    },
    "options_ar": {
-    "a": "«تعلّم الذكاء الاصطناعي من تجاربي السابقة، فأصبح الآن موثوقاً تماماً في هذه المهمة».",
-    "b": "«عذراً، يبدو أنني أخطأت في المرة السابقة. لننتقل إلى ما بعده».",
-    "c": "«جيد: إجابات الذكاء الاصطناعي قد تتغير في كل مرة، ولهذا نختبره على حالات كثيرة».",
-    "d": "«دعوني أكرر السؤال نفسه مرة بعد مرة حتى يخطئ، لتروا الخطأ جميعاً»."
+    "a": "«تعلّم الذكاء الاصطناعي من تجاربي السابقة، فصار الآن يجيب دائماً إجابة صحيحة».",
+    "b": "«عذراً، أخطأت في المرة السابقة».",
+    "c": "«إجابات الذكاء الاصطناعي قد تتغير، ولهذا نختبره مرات كثيرة».",
+    "d": "«سأكرر السؤال حتى يخطئ»."
    },
    "key": "c",
    "skill": "Judging AI"
   },
   {
    "id": "tq7",
-   "text": "A founder corrected AI in one chat: \"Our delivery fee is 2 JD, not 3.\" The next day, in a new chat, it says 3 JD again. What should you explain?",
-   "text_ar": "صحّح رائد أعمال الذكاء الاصطناعي في إحدى المحادثات: «رسوم التوصيل 2 دينار، لا 3». في اليوم التالي، وفي محادثة جديدة، قال الذكاء الاصطناعي 3 دنانير مرة أخرى. ماذا تشرح له؟",
+   "text": "A founder told AI in one chat: \"Our delivery fee is 2 JD, not 3.\" The next day, in a new chat, it says 3 JD again. Why?",
+   "text_ar": "قال رائد أعمال للذكاء الاصطناعي في إحدى المحادثات: «رسوم التوصيل 2 دينار، لا 3». في اليوم التالي، وفي محادثة جديدة، قال الذكاء الاصطناعي 3 دنانير مرة أخرى. لماذا؟",
    "options": {
-    "a": "A correction stays in that chat only. Put the right fee in the facts it always reads.",
-    "b": "The AI learns slowly. After a few more corrections in different chats, it will remember the fee.",
-    "c": "The AI is not working properly today, so the founder should report the problem to the company.",
-    "d": "Only paid plans remember corrections, so the founder should move to a paid plan soon."
+    "a": "The correction stayed in the old chat only.",
+    "b": "AI needs a few more corrections before it learns.",
+    "c": "The AI is broken today.",
+    "d": "AI only remembers corrections for one day."
    },
    "options_ar": {
-    "a": "التصحيح يبقى في تلك المحادثة فقط. ضع الرسوم الصحيحة في الحقائق التي يقرؤها دائماً.",
-    "b": "الذكاء الاصطناعي يتعلم ببطء. بعد بضعة تصحيحات أخرى في محادثات مختلفة سيتذكر الرسوم.",
-    "c": "الذكاء الاصطناعي لا يعمل كما يجب اليوم، فعلى رائد الأعمال أن يبلّغ الشركة بالمشكلة.",
-    "d": "الخطط المدفوعة وحدها تتذكر التصحيحات، فعلى رائد الأعمال أن ينتقل قريباً إلى خطة مدفوعة."
+    "a": "التصحيح بقي في المحادثة القديمة فقط.",
+    "b": "يحتاج الذكاء الاصطناعي إلى تصحيحات أكثر حتى يتعلّم.",
+    "c": "الذكاء الاصطناعي معطّل اليوم.",
+    "d": "الذكاء الاصطناعي يتذكر التصحيحات ليوم واحد فقط."
    },
    "key": "a",
    "skill": "Give AI the right facts"

@@ -4,68 +4,68 @@ Generated from `content/trainer-questions.json`. Do not edit by hand: change the
 
 The same 7 questions at the start and the end of the training. They test understanding of the ideas, not the course's own terms. On screen, the order of questions and options changes for each person, and the Arabic sits under the English.
 
-## 1. You are teaching one part of the course and you are 10 minutes behind. A short talk, a story and the hands-on exercise are still left. What should you do?
+## 1. You are 10 minutes behind schedule. You still have a short talk, a story and an exercise. What do you do?
 
-<p dir="rtl" lang="ar">أنت تدرّس جزءاً من الدورة، ومتأخر عن الجدول 10 دقائق. بقي شرح قصير وقصة والتمرين العملي. ماذا تفعل؟</p>
+<p dir="rtl" lang="ar">تأخرت 10 دقائق عن الجدول، وبقي شرح قصير وقصة وتمرين. ماذا تفعل؟</p>
 
-- **a)** Keep the hands-on exercise and shorten the talk or the story, because founders learn by doing.<br><span dir="rtl" lang="ar">تُبقي التمرين العملي وتختصر الشرح أو القصة، لأن رواد الأعمال يتعلمون بالتطبيق.</span>
-- **b)** Keep the talk and the story, and give the exercise as homework, because the ideas matter most.<br><span dir="rtl" lang="ar">تُبقي الشرح والقصة وتجعل التمرين واجباً منزلياً، لأن الأفكار هي الأهم.</span>
-- **c)** Do everything as planned and finish 10 minutes late, because every slide is needed.<br><span dir="rtl" lang="ar">تنفّذ كل شيء كما خُطّط له وتنتهي متأخراً 10 دقائق، لأن كل شريحة ضرورية.</span>
-- **d)** Move on to the next part now, and come back to this exercise at the end of the day if there is time.<br><span dir="rtl" lang="ar">تنتقل إلى الجزء التالي الآن، وتعود إلى هذا التمرين في نهاية اليوم إن بقي لديك وقت.</span>
+- **a)** Keep the exercise, and shorten the talk or the story.<br><span dir="rtl" lang="ar">تُبقي التمرين، وتختصر الشرح أو القصة.</span>
+- **b)** Keep the talk and the story, and give the exercise as homework.<br><span dir="rtl" lang="ar">تُبقي الشرح والقصة، وتجعل التمرين واجباً منزلياً.</span>
+- **c)** Do everything, and finish 10 minutes late.<br><span dir="rtl" lang="ar">تنفّذ كل شيء، وتنتهي متأخراً 10 دقائق.</span>
+- **d)** Skip the exercise, and move to the next part.<br><span dir="rtl" lang="ar">تلغي التمرين، وتنتقل إلى الجزء التالي.</span>
 
-## 2. Founders have just finished an exercise. What is the best way to find out who has really understood it?
+## 2. Founders have just finished an exercise. How do you find out who understood it?
 
-<p dir="rtl" lang="ar">أنهى رواد الأعمال تمريناً للتو. ما أفضل طريقة لتعرف مَن فهمه فعلاً؟</p>
+<p dir="rtl" lang="ar">أنهى رواد الأعمال تمريناً للتو. كيف تعرف مَن فهمه؟</p>
 
-- **a)** Ask the whole room "Is everything clear?" and move on when most of the people nod.<br><span dir="rtl" lang="ar">تسأل القاعة كلها: «هل كل شيء واضح؟» وتكمل عندما يومئ معظم الحاضرين برؤوسهم.</span>
-- **b)** Ask one or two of the strongest founders to explain the idea back to the whole room.<br><span dir="rtl" lang="ar">تطلب من واحد أو اثنين من أقوى المشاركين أن يشرحا الفكرة للقاعة كلها.</span>
-- **c)** Check everyone's work against the goal of the exercise, and go first to those who missed it.<br><span dir="rtl" lang="ar">تراجع عمل كل شخص مقارنةً بهدف التمرين، ثم تساعد أولاً من لم يصل إليه.</span>
-- **d)** Wait for questions at the end of the day, because people usually ask for help when they are stuck.<br><span dir="rtl" lang="ar">تنتظر الأسئلة في نهاية اليوم، لأن الناس عادةً يطلبون المساعدة عندما يتعثرون.</span>
+- **a)** Ask the room: "Is everything clear?"<br><span dir="rtl" lang="ar">تسأل القاعة: «هل كل شيء واضح؟»</span>
+- **b)** Ask the best founder to explain it to everyone.<br><span dir="rtl" lang="ar">تطلب من أفضل مشارك أن يشرحه للجميع.</span>
+- **c)** Check each person's work yourself.<br><span dir="rtl" lang="ar">تراجع عمل كل شخص بنفسك.</span>
+- **d)** Wait for people to ask questions at the end of the day.<br><span dir="rtl" lang="ar">تنتظر أن يطرح الناس أسئلتهم في نهاية اليوم.</span>
 
-## 3. A founder says: "Everyone I told about my idea loved it, and they all said they would use it." Which of these best shows that the problem is real?
+## 3. A founder says: "Everyone I told loved my idea." What best shows that the problem is real?
 
-<p dir="rtl" lang="ar">يقول رائد أعمال: «كل من أخبرته بفكرتي أحبها، وقالوا جميعاً إنهم سيستخدمونها». أيّ مما يلي أقوى دليل على أن المشكلة حقيقية؟</p>
+<p dir="rtl" lang="ar">يقول رائد أعمال: «كل من أخبرته أحبّ فكرتي». ما أقوى دليل على أن المشكلة حقيقية؟</p>
 
-- **a)** The same answer from many more people, for example 50 people instead of 10.<br><span dir="rtl" lang="ar">الجواب نفسه من عدد أكبر بكثير من الناس، مثلاً 50 شخصاً بدل 10.</span>
-- **b)** A recent report showing that the market for this kind of product is growing fast every year.<br><span dir="rtl" lang="ar">تقرير حديث يُظهر أن سوق هذا النوع من المنتجات ينمو بسرعة كبيرة عاماً بعد عام.</span>
-- **c)** Friends and family sharing the idea on social media with all of their contacts.<br><span dir="rtl" lang="ar">أن يشارك الأصدقاء والعائلة الفكرة على مواقع التواصل مع كل معارفهم.</span>
-- **d)** People who already spend time or money today on their own way to solve it.<br><span dir="rtl" lang="ar">أشخاص ينفقون اليوم وقتاً أو مالاً على حلّ يدبّرونه بأنفسهم لهذه المشكلة.</span>
+- **a)** Many more people saying that they love the idea.<br><span dir="rtl" lang="ar">عدد أكبر بكثير من الناس يقولون إنهم يحبون الفكرة.</span>
+- **b)** A report saying that this market grows every year.<br><span dir="rtl" lang="ar">تقرير يقول إن هذا السوق ينمو كل عام.</span>
+- **c)** Friends and family sharing the idea online.<br><span dir="rtl" lang="ar">أصدقاء وأقارب يشاركون الفكرة على الإنترنت.</span>
+- **d)** People already spend time or money to solve it.<br><span dir="rtl" lang="ar">أشخاص ينفقون اليوم وقتاً أو مالاً لحلّها.</span>
 
-## 4. A founder plans to interview customers with this question: "Would you use an app that reminds you to pay your bills?" How should you help them improve it?
+## 4. A founder wants to ask customers: "Would you use an app that reminds you to pay your bills?" What should they ask instead?
 
-<p dir="rtl" lang="ar">يخطط رائد أعمال لمقابلة زبائن بهذا السؤال: «هل ستستخدم تطبيقاً يذكّرك بدفع فواتيرك؟» كيف تساعده على تحسينه؟</p>
+<p dir="rtl" lang="ar">يريد رائد أعمال أن يسأل الزبائن: «هل ستستخدم تطبيقاً يذكّرك بدفع فواتيرك؟» ماذا يسأل بدلاً من ذلك؟</p>
 
-- **a)** Make it easier to measure: "From 1 to 10, how likely are you to use this app?"<br><span dir="rtl" lang="ar">يجعل السؤال أسهل في القياس: «من 1 إلى 10، ما مدى احتمال أن تستخدم هذا التطبيق؟»</span>
-- **b)** Ask about a real past event instead: "Tell me about the last time you paid a bill late."<br><span dir="rtl" lang="ar">يسأل بدلاً منه عن حدث حقيقي مضى: «حدّثني عن آخر مرة تأخرت فيها في دفع فاتورة».</span>
-- **c)** Add a price to the question, so the person says whether they would pay for the app.<br><span dir="rtl" lang="ar">يضيف سعراً إلى السؤال، ليقول الشخص هل سيدفع مقابل التطبيق أم لا.</span>
-- **d)** Explain the app in detail first, so the person understands it well and gives a better answer.<br><span dir="rtl" lang="ar">يشرح التطبيق للشخص بالتفصيل أولاً، حتى يفهمه جيداً ويعطي جواباً أفضل.</span>
+- **a)** "From 1 to 10, how likely are you to use this app?"<br><span dir="rtl" lang="ar">«من 1 إلى 10، ما احتمال أن تستخدم هذا التطبيق؟»</span>
+- **b)** "When did you last pay a bill late?"<br><span dir="rtl" lang="ar">«متى تأخرت آخر مرة في دفع فاتورة؟»</span>
+- **c)** "Would you pay 2 JD a month for this app?"<br><span dir="rtl" lang="ar">«هل ستدفع 2 دينار شهرياً مقابل هذا التطبيق؟»</span>
+- **d)** "Do you like the idea of this app?"<br><span dir="rtl" lang="ar">«هل تعجبك فكرة هذا التطبيق؟»</span>
 
-## 5. Why do we ask founders to write down the result that will count as success before they send their test to people?
+## 5. Why do founders write down what will count as success before they test their idea?
 
-<p dir="rtl" lang="ar">لماذا نطلب من رواد الأعمال أن يكتبوا النتيجة التي ستُعدّ نجاحاً قبل أن يرسلوا اختبارهم إلى الناس؟</p>
+<p dir="rtl" lang="ar">لماذا يكتب رواد الأعمال ما سيُعدّ نجاحاً قبل أن يختبروا فكرتهم؟</p>
 
-- **a)** So the AI can calculate the result for them automatically, as soon as the replies come in.<br><span dir="rtl" lang="ar">حتى يحسب الذكاء الاصطناعي النتيجة لهم تلقائياً عندما تصل الردود.</span>
-- **b)** So everyone in the room uses the same target, and the results are fair.<br><span dir="rtl" lang="ar">حتى يستخدم الجميع في القاعة الهدف نفسه، فتكون النتائج عادلة.</span>
-- **c)** So they can show investors a clear goal from the very first day.<br><span dir="rtl" lang="ar">حتى يعرضوا على المستثمرين هدفاً واضحاً منذ اليوم الأول.</span>
-- **d)** So they cannot change what the results mean afterwards just to make them look good.<br><span dir="rtl" lang="ar">حتى لا يغيّروا معنى النتائج بعد ظهورها لمجرد أن تبدو جيدة.</span>
+- **a)** So AI can count the results for them automatically.<br><span dir="rtl" lang="ar">حتى يحسب الذكاء الاصطناعي النتائج لهم تلقائياً.</span>
+- **b)** So everyone in the room uses the same goal, and it is fair.<br><span dir="rtl" lang="ar">حتى يستخدم الجميع في القاعة الهدف نفسه، فتكون النتائج عادلة.</span>
+- **c)** So they can show investors a clear goal on day one.<br><span dir="rtl" lang="ar">حتى يعرضوا على المستثمرين هدفاً واضحاً من اليوم الأول.</span>
+- **d)** So they cannot change the goal after seeing the results.<br><span dir="rtl" lang="ar">حتى لا يغيّروا الهدف بعد أن يروا النتائج.</span>
 
-## 6. During an exercise in a training session, you show the room a question that the AI got wrong when you tried it before. This time, it answers correctly. What is the best thing to say?
+## 6. During an exercise in a training session, AI gets a question right that it got wrong before. What do you say?
 
-<p dir="rtl" lang="ar">خلال تمرين في إحدى جلسات التدريب، تعرض على القاعة سؤالاً أخطأ فيه الذكاء الاصطناعي عندما جرّبته من قبل. هذه المرة أجاب عنه إجابة صحيحة. ما أفضل ما تقوله؟</p>
+<p dir="rtl" lang="ar">خلال تمرين في إحدى جلسات التدريب، أجاب الذكاء الاصطناعي إجابة صحيحة عن سؤال أخطأ فيه من قبل. ماذا تقول؟</p>
 
-- **a)** "The AI has learned from my earlier tries, so now it is fully reliable for this task."<br><span dir="rtl" lang="ar">«تعلّم الذكاء الاصطناعي من تجاربي السابقة، فأصبح الآن موثوقاً تماماً في هذه المهمة».</span>
-- **b)** "Sorry, I must have made a mistake before. Let us move on."<br><span dir="rtl" lang="ar">«عذراً، يبدو أنني أخطأت في المرة السابقة. لننتقل إلى ما بعده».</span>
-- **c)** "Good: AI answers can change each time. That is why we test on many cases."<br><span dir="rtl" lang="ar">«جيد: إجابات الذكاء الاصطناعي قد تتغير في كل مرة، ولهذا نختبره على حالات كثيرة».</span>
-- **d)** "Let me keep asking the same question until it gets it wrong, so you all see the mistake."<br><span dir="rtl" lang="ar">«دعوني أكرر السؤال نفسه مرة بعد مرة حتى يخطئ، لتروا الخطأ جميعاً».</span>
+- **a)** "The AI learned from my earlier tries, so now it will always be right."<br><span dir="rtl" lang="ar">«تعلّم الذكاء الاصطناعي من تجاربي السابقة، فصار الآن يجيب دائماً إجابة صحيحة».</span>
+- **b)** "Sorry, I made a mistake before."<br><span dir="rtl" lang="ar">«عذراً، أخطأت في المرة السابقة».</span>
+- **c)** "AI answers can change. That is why we test many times."<br><span dir="rtl" lang="ar">«إجابات الذكاء الاصطناعي قد تتغير، ولهذا نختبره مرات كثيرة».</span>
+- **d)** "Let me ask again until it gets it wrong."<br><span dir="rtl" lang="ar">«سأكرر السؤال حتى يخطئ».</span>
 
-## 7. A founder corrected AI in one chat: "Our delivery fee is 2 JD, not 3." The next day, in a new chat, it says 3 JD again. What should you explain?
+## 7. A founder told AI in one chat: "Our delivery fee is 2 JD, not 3." The next day, in a new chat, it says 3 JD again. Why?
 
-<p dir="rtl" lang="ar">صحّح رائد أعمال الذكاء الاصطناعي في إحدى المحادثات: «رسوم التوصيل 2 دينار، لا 3». في اليوم التالي، وفي محادثة جديدة، قال الذكاء الاصطناعي 3 دنانير مرة أخرى. ماذا تشرح له؟</p>
+<p dir="rtl" lang="ar">قال رائد أعمال للذكاء الاصطناعي في إحدى المحادثات: «رسوم التوصيل 2 دينار، لا 3». في اليوم التالي، وفي محادثة جديدة، قال الذكاء الاصطناعي 3 دنانير مرة أخرى. لماذا؟</p>
 
-- **a)** A correction stays in that chat only. Put the right fee in the facts it always reads.<br><span dir="rtl" lang="ar">التصحيح يبقى في تلك المحادثة فقط. ضع الرسوم الصحيحة في الحقائق التي يقرؤها دائماً.</span>
-- **b)** The AI learns slowly. After a few more corrections in different chats, it will remember the fee.<br><span dir="rtl" lang="ar">الذكاء الاصطناعي يتعلم ببطء. بعد بضعة تصحيحات أخرى في محادثات مختلفة سيتذكر الرسوم.</span>
-- **c)** The AI is not working properly today, so the founder should report the problem to the company.<br><span dir="rtl" lang="ar">الذكاء الاصطناعي لا يعمل كما يجب اليوم، فعلى رائد الأعمال أن يبلّغ الشركة بالمشكلة.</span>
-- **d)** Only paid plans remember corrections, so the founder should move to a paid plan soon.<br><span dir="rtl" lang="ar">الخطط المدفوعة وحدها تتذكر التصحيحات، فعلى رائد الأعمال أن ينتقل قريباً إلى خطة مدفوعة.</span>
+- **a)** The correction stayed in the old chat only.<br><span dir="rtl" lang="ar">التصحيح بقي في المحادثة القديمة فقط.</span>
+- **b)** AI needs a few more corrections before it learns.<br><span dir="rtl" lang="ar">يحتاج الذكاء الاصطناعي إلى تصحيحات أكثر حتى يتعلّم.</span>
+- **c)** The AI is broken today.<br><span dir="rtl" lang="ar">الذكاء الاصطناعي معطّل اليوم.</span>
+- **d)** AI only remembers corrections for one day.<br><span dir="rtl" lang="ar">الذكاء الاصطناعي يتذكر التصحيحات ليوم واحد فقط.</span>
 
 ## End of the training only: topics (not scored)
 
