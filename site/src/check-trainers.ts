@@ -20,7 +20,7 @@ runCheck({
       },
       after: {
         label: 'After the training',
-        intro: `The same ${count} questions you answered at the start, then one short question about the topics that helped you most. About 10 minutes. Answer with what you know now.`,
+        intro: `${capitalise(count)} questions about the ideas in this training, each with Arabic under it, then one short question about the topics that helped you most. About 10 minutes.`,
       },
     },
     noteHtml:
@@ -30,6 +30,7 @@ runCheck({
     doneAfter: 'Thank you for taking part in the training.',
     startLabel: 'Start of training',
     orgLabel: 'Your organisation',
+    emailError: 'Please write a valid email.', // Alex, 11 Nov: no mention of a start-of-training check
     orgHint: 'The incubator or accelerator you work with.',
   },
 });

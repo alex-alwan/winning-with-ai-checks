@@ -16,6 +16,7 @@ export interface CheckCopy {
   startLabel: string; // "Start of course"
   orgLabel?: string;
   orgHint?: string;
+  emailError?: string; // replaces the default message for a bad email
 }
 
 export interface CheckConfig {
@@ -211,7 +212,7 @@ export function runCheck(c: CheckConfig): void {
       el.focus();
     };
     if (!isFullName(name)) return fail(nameEl, MSG.name);
-    if (!isEmail(email)) return fail(emailEl, MSG.email);
+    if (!isEmail(email)) return fail(emailEl, c.copy.emailError || MSG.email);
     if (orgEl && (org.length < 2 || org.length > 100)) return fail(orgEl, MSG.org);
     setText(err, '');
     const opts: Record<string, string[]> = {};

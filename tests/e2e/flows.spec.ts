@@ -208,6 +208,9 @@ test.describe('trainer knowledge check', () => {
 
     await page.goto('/trainer?stage=after&cohort=ToT-E2E');
     await expect(page.locator('#stageLabel')).toHaveText('After the training');
+    // no mention of a start-of-training check on this page (Alex, 11 Nov)
+    await expect(page.locator('#intro')).toHaveText('Seven questions about the ideas in this training, each with Arabic under it, then one short question about the topics that helped you most. About 10 minutes.');
+    await expect(page.locator('#s-start')).not.toContainText(/at the start|same questions|before the training/i);
     await start(page, 'Zaid Nasser', 'zaid@example.com', 'ZINC');
     await answerAll(page, trainerQs, 6, undefined, 'Next');
 
