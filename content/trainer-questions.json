@@ -100,8 +100,8 @@
   },
   {
    "id": "tq6",
-   "text": "During a hands-on exercise, you show the room a question that the AI got wrong when you tried it before. This time, it answers correctly. What is the best thing to say?",
-   "text_ar": "خلال تمرين عملي، تعرض على القاعة سؤالاً أخطأ فيه الذكاء الاصطناعي عندما جرّبته من قبل. هذه المرة أجاب عنه إجابة صحيحة. ما أفضل ما تقوله؟",
+   "text": "During an exercise in a training session, you show the room a question that the AI got wrong when you tried it before. This time, it answers correctly. What is the best thing to say?",
+   "text_ar": "خلال تمرين في إحدى جلسات التدريب، تعرض على القاعة سؤالاً أخطأ فيه الذكاء الاصطناعي عندما جرّبته من قبل. هذه المرة أجاب عنه إجابة صحيحة. ما أفضل ما تقوله؟",
    "options": {
     "a": "\"The AI has learned from my earlier tries, so now it is fully reliable for this task.\"",
     "b": "\"Sorry, I must have made a mistake before. Let us move on.\"",

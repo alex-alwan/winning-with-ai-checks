@@ -49,9 +49,9 @@ The same 10 questions at the start and the end of the training. They test unders
 - **c)** So they can show investors a clear goal from the very first day.<br><span dir="rtl" lang="ar">حتى يعرضوا على المستثمرين هدفاً واضحاً منذ اليوم الأول.</span>
 - **d)** So they cannot change what the results mean afterwards just to make them look good.<br><span dir="rtl" lang="ar">حتى لا يغيّروا معنى النتائج بعد ظهورها لمجرد أن تبدو جيدة.</span>
 
-## 6. During a hands-on exercise, you show the room a question that the AI got wrong when you tried it before. This time, it answers correctly. What is the best thing to say?
+## 6. During an exercise in a training session, you show the room a question that the AI got wrong when you tried it before. This time, it answers correctly. What is the best thing to say?
 
-<p dir="rtl" lang="ar">خلال تمرين عملي، تعرض على القاعة سؤالاً أخطأ فيه الذكاء الاصطناعي عندما جرّبته من قبل. هذه المرة أجاب عنه إجابة صحيحة. ما أفضل ما تقوله؟</p>
+<p dir="rtl" lang="ar">خلال تمرين في إحدى جلسات التدريب، تعرض على القاعة سؤالاً أخطأ فيه الذكاء الاصطناعي عندما جرّبته من قبل. هذه المرة أجاب عنه إجابة صحيحة. ما أفضل ما تقوله؟</p>
 
 - **a)** "The AI has learned from my earlier tries, so now it is fully reliable for this task."<br><span dir="rtl" lang="ar">«تعلّم الذكاء الاصطناعي من تجاربي السابقة، فأصبح الآن موثوقاً تماماً في هذه المهمة».</span>
 - **b)** "Sorry, I must have made a mistake before. Let us move on."<br><span dir="rtl" lang="ar">«عذراً، يبدو أنني أخطأت في المرة السابقة. لننتقل إلى ما بعده».</span>
