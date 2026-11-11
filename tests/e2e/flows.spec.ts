@@ -211,6 +211,8 @@ test.describe('trainer knowledge check', () => {
     // no mention of a start-of-training check on this page (Alex, 11 Nov)
     await expect(page.locator('#intro')).toHaveText('Seven questions about the ideas in this training, each with Arabic under it, then one short question about the topics that helped you most. About 10 minutes.');
     await expect(page.locator('#s-start')).not.toContainText(/at the start|same questions|before the training/i);
+    await expect(page.locator('#s-start')).toContainText('There is no pass or fail. Choose the answer you believe is best, even if you are not sure.');
+    await expect(page.locator('#s-start')).toContainText('Your answers are seen only by the course team.');
     await start(page, 'Zaid Nasser', 'zaid@example.com', 'ZINC');
     await answerAll(page, trainerQs, 6, undefined, 'Next');
 

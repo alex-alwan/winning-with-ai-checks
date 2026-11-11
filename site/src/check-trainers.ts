@@ -24,8 +24,8 @@ runCheck({
       },
     },
     noteHtml:
-      '<p><b>There is no pass or fail.</b> Choose the answer you believe is best, even if you are not sure. Please do not look anything up or ask others.</p>' +
-      '<p>Your answers are seen only by the course team, to measure what the training teaches.</p>',
+      '<p><b>There is no pass or fail.</b> Choose the answer you believe is best, even if you are not sure.</p>' +
+      '<p>Your answers are seen only by the course team.</p>',
     doneBefore: 'You will answer the same questions at the end of the training. Enjoy the two days.',
     doneAfter: 'Thank you for taking part in the training.',
     startLabel: 'Start of training',
